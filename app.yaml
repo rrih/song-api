@@ -1,0 +1,5 @@
+runtime: go115
+
+main: ./cmd/app
+
+includes: ./configs/secret.yaml
