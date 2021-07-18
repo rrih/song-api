@@ -1,6 +1,11 @@
 # managedby
 
-実行
+run
 ```bash
-$ air
+docker-compose build && docker-compose up # db
+air # api server
+```
+
+```bash
+mysql -uuser -proot -D managedby_db -e "show databases"
 ```

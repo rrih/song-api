@@ -2,18 +2,32 @@ version: '3.3'
 
 services:
     db:
-        build: ./deployments/docker/mysql
+        build: ./docker/mysql
         container_name: managedby_db
         image: mysql:5.7
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: test_db
+            MYSQL_USER: root
+            MYSQL_ROOT_PASSWORD: password
+            MYSQL_DATABASE: managedby_db
             TZ: 'Asia/Tokyo'
         command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
         ports:
             - 3300:3306
         volumes: 
-            - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d
+            - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d/
             - ./docker/mysql/conf.d:/etc/mysql/conf.d
             - ./log/mysql:/var/log/mysql
+    # app:
+    #     build: .
+    #     depends_on: 
+    #         - db
+    #     volumes: 
+    #         - ./:/go/src/app
+    #     ports: 
+    #         - 8080:8080
+    #     environment: 
+    #         MYSQL_DATABASE: managedby_db
+    #         MYSQL_HOST: managedby_db
+    #         MYSQL_USER: user
+    #         MYSQL_PASSWORD: password
