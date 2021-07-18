@@ -18,16 +18,4 @@ services:
             - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d/
             - ./docker/mysql/conf.d:/etc/mysql/conf.d
             - ./log/mysql:/var/log/mysql
-    # app:
-    #     build: .
-    #     depends_on: 
-    #         - db
-    #     volumes: 
-    #         - ./:/go/src/app
-    #     ports: 
-    #         - 8080:8080
-    #     environment: 
-    #         MYSQL_DATABASE: managedby_db
-    #         MYSQL_HOST: managedby_db
-    #         MYSQL_USER: user
-    #         MYSQL_PASSWORD: password
+            
