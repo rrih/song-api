@@ -21,15 +21,17 @@ CREATE TABLE IF NOT EXISTS music (
     name VARCHAR(100),
     is_anime_video_dam TINYINT(1) NOT NULL DEFAULT 0, -- LIVE DAM の場合アニメ映像が存在するか
     is_anime_video_joy TINYINT(1) NOT NULL DEFAULT 0, -- JOYSOUND の場合アニメ映像が存在するか
-    key_number INT,
+    is_official_video_dam TINYINT(1) NOT NULL DEFAULT 0,
+    is_official_video_joy TINYINT(1) NOT NULL DEFAULT 0,
     is_fav TINYINT(1) NOT NULL DEFAULT 0,
+    start_singing VARCHAR(200),
     deleted DATETIME,
     created DATETIME NOT NULL,
     modified DATETIME NOT NULL,
     PRIMARY KEY (id)
 );
 
--- スコアの情報
+-- 楽曲のカラオケスコアの情報
 CREATE TABLE IF NOT EXISTS score (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
@@ -37,7 +39,10 @@ CREATE TABLE IF NOT EXISTS score (
     music_id INT NOT NULL,
     is_dam TINYINT(1) NOT NULL DEFAULT 0, -- LIVE DAM であるか
     is_joy TINYINT(1) NOT NULL DEFAULT 0, -- JOYSOUND であるか
-    score INT NOT NULL,
+    is_able_to_song_by_man TINYINT(1) NOT NULL DEFAULT 0, -- 男が歌える音程か
+    is_able_to_song_by_woman TINYINT(1) NOT NULL DEFAULT 0, -- 女が歌える音程か
+    key_number INT, -- キー設定
+    score FLOAT NOT NULL,
     key_number INT,
     text VARCHAR(1000),
     deleted DATETIME,
