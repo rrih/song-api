@@ -18,5 +18,11 @@ docker-compose build && docker-compose up
 docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 ```
 
+```bash
+# reset container
+docker rm -f managedby_db
+docker-compose build && docker-compose up
+```
+
 ## author
 [@rrih_dev](https://twitter.com/rrih_dev)
