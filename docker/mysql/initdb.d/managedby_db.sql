@@ -127,3 +127,9 @@ INSERT INTO music (
     '2021-07-19 00:00:00',
     '2021-07-19 00:00:00'
 );
+
+INSERT INTO score (
+    id, user_id, another_user_id, music_id, vibrato, kobushi, fall, shakuri, is_dam, is_joy, is_able_to_song_by_man, is_able_to_song_by_woman, is_fav, key_number, score, text, deleted, created, modified
+) VALUES (
+    1, 1, null, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 88.234, '長いフレーズに続くビブラートの耳触りがとても心地よいです。テクニックが際立っていますね。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00'
+);
