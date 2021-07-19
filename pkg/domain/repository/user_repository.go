@@ -2,16 +2,16 @@ package repository
 
 import (
 	"log"
+	"time"
 
 	"github.com/rrih/managedby/pkg/domain/entity"
 	"github.com/rrih/managedby/pkg/infrastructure"
 )
 
-// TODO: repository から呼び出せるようにする
 func FindAll() []entity.User {
 	db := infrastructure.DbConn()
 	rows, err := db.Query(
-		"select id, name, email, password, created, modified from users",
+		"select id, name, email, password, is_admin, deleted, created, modified from users",
 	)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -23,9 +23,11 @@ func FindAll() []entity.User {
 		var name string
 		var email string
 		var password string
+		var isAdmin bool
+		var deleted *string
 		var created string
 		var modified string
-		err := rows.Scan(&id, &name, &email, &password, &created, &modified)
+		err := rows.Scan(&id, &name, &email, &password, &isAdmin, &deleted, &created, &modified)
 		if err != nil {
 			panic(err)
 		}
@@ -33,10 +35,24 @@ func FindAll() []entity.User {
 		user.Name = name
 		user.Email = email
 		user.Password = password
+		user.IsAdmin = isAdmin
+		user.Deleted = deleted
 		user.Created = created
 		user.Modified = modified
 		users = append(users, user)
 	}
 	defer db.Close()
 	return users
+}
+
+func Insert(u entity.InsertedUser) {
+	db := infrastructure.DbConn()
+	// TODO: 日本時間にする
+	created, modified := time.Now(), time.Now()
+	_, err := db.Exec(
+		"insert into users (name, email, password, is_admin, deleted, created, modified) values (?, ?, ?, ?, ?, ?, ?)", u.Name, u.Email, u.Password, u.IsAdmin, nil, created, modified,
+	)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
