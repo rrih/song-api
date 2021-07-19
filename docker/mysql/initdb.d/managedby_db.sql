@@ -134,11 +134,7 @@ INSERT INTO score (
     1, 1, null, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 88.234, '長いフレーズに続くビブラートの耳触りがとても心地よいです。テクニックが際立っていますね。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00'
 );
 
-INSERT INTO score_comments (
-    id, score_id, comment_id
-) VALUES (
-    1, 1, 1
-);
+INSERT INTO score_comments (id, score_id, comment_id) VALUES (1, 1, 1);
 
 INSERT INTO comments (id, text, deleted, created, modified) VALUES (1, '後半、息を多く吸う必要あり。ぎりぎり最高音程出せたけどミックスボイスを使えないとダメな感じ。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00');
 
