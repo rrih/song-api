@@ -2,6 +2,7 @@ package repository
 
 import (
 	"log"
+	"time"
 
 	"github.com/rrih/managedby/pkg/domain/entity"
 	"github.com/rrih/managedby/pkg/infrastructure"
@@ -44,16 +45,14 @@ func FindAll() []entity.User {
 	return users
 }
 
-// func Add() entity.User {
-// 	db := infrastructure.DbConn()
-// 	time.Local = time.FixedZone("Asia/Tokyo", 9*60*60)
-// 	created := time.Now()
-// 	modified := time.Now()
-// 	rows, err := db.Query(
-// 		"insert into users (id, name, email, password, created, modified) values (?, ?, ?, ?)",
-// 	)
-// 	if err != nil {
-// 		log.Fatal(err.Error())
-// 	}
-
-// }
+func Insert(u entity.InsertedUser) {
+	db := infrastructure.DbConn()
+	// TODO: 日本時間にする
+	created, modified := time.Now(), time.Now()
+	_, err := db.Exec(
+		"insert into users (name, email, password, is_admin, deleted, created, modified) values (?, ?, ?, ?, ?, ?, ?)", u.Name, u.Email, u.Password, u.IsAdmin, nil, created, modified,
+	)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}
