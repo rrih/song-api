@@ -3,9 +3,9 @@ USE managedby_db;
 
 -- ユーザーの情報
 CREATE TABLE IF NOT EXISTS users (
-    id INT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(64),
-    email VARCHAR(64) NOT NULL,
+    id INT NOT NULL AUTO_INCREMENT UNIQUE,
+    name VARCHAR(64) UNIQUE,
+    email VARCHAR(64) NOT NULL UNIQUE,
     password VARCHAR(64) NOT NULL,
     is_admin TINYINT(1) NOT NULL DEFAULT 0, -- admin であるか
     deleted DATETIME DEFAULT NULL,
@@ -16,13 +16,14 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- 楽曲の情報
 CREATE TABLE IF NOT EXISTS music (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT UNIQUE,
     registered_user_id INT NOT NULL,
     category_id INT NOT NULL,
     name VARCHAR(100) NOT NULL,
     singer_name VARCHAR(100) NOT NULL, -- 歌手名
     composer_name VARCHAR(100) NOT NULL, -- 作曲者名
     source VARCHAR(100) NOT NULL, -- 楽曲を使用したコンテンツ名
+    url VARCHAR(256), -- 参考 URL
     is_anime_video_dam TINYINT(1) NOT NULL DEFAULT 0, -- LIVE DAM の場合アニメ映像が存在するか
     is_anime_video_joy TINYINT(1) NOT NULL DEFAULT 0, -- JOYSOUND の場合アニメ映像が存在するか
     is_official_video_dam TINYINT(1) NOT NULL DEFAULT 0,
@@ -51,7 +52,6 @@ CREATE TABLE IF NOT EXISTS score (
     is_fav TINYINT(1) NOT NULL DEFAULT 0, -- お気に入りかどうか
     key_number INT, -- キー設定
     score FLOAT NOT NULL,
-    key_number INT,
     text VARCHAR(1000),
     deleted DATETIME DEFAULT NULL,
     created DATETIME NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS score (
 
 -- スコアとコメントの中間テーブル
 CREATE TABLE IF NOT EXISTS score_comments (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT UNIQUE,
     score_id INT NOT NULL,
     comment_id INT NOT NULL,
     PRIMARY KEY (id)
@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS score_comments (
 
 -- コメントの情報
 CREATE TABLE IF NOT EXISTS comments (
-    id INT NOT NULL AUTO_INCREMENT,
+    id INT NOT NULL AUTO_INCREMENT UNIQUE,
     text VARCHAR(100) NOT NULL,
     deleted DATETIME DEFAULT NULL,
     created DATETIME NOT NULL,
@@ -90,4 +90,40 @@ CREATE TABLE IF NOT EXISTS categories (
 
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (1, 'admin', 'rsklv@test.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (2, 'origa', 'test@gmail.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
-INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (3, 'ryohei', 'k.ryohei@test.co.jp', 'testtest', 0, null, '2020-02-01 00:00:00', '2020-02-01 00:00:00');
+INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (3, 'ryohei2', 'k.ryohei@test.co.jp', 'testtest', 0, null, '2020-02-01 00:00:00', '2020-02-01 00:00:00');
+
+INSERT INTO music (
+    id,
+    registered_user_id,
+    category_id,
+    name,
+    singer_name,
+    composer_name,
+    source,
+    url,
+    is_anime_video_dam,
+    is_anime_video_joy,
+    is_official_video_dam,
+    is_official_video_joy,
+    start_singing,
+    deleted,
+    created,
+    modified
+) VALUES (
+    1,
+    1,
+    1,
+    '三原色',
+    'YOASOBI',
+    'YOASOBI',
+    'ahamoのCM',
+    'https://www.youtube.com/watch?v=nhOhFOoURnE',
+    0,
+    0,
+    0,
+    0,
+    'どこかで途切れた物語',
+    null,
+    '2021-07-19 00:00:00',
+    '2021-07-19 00:00:00'
+);
