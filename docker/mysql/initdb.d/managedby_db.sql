@@ -88,10 +88,12 @@ CREATE TABLE IF NOT EXISTS categories (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- ユーザデータ投入
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (1, 'admin', 'rsklv@test.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (2, 'origa', 'test@gmail.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (3, 'ryohei2', 'k.ryohei@test.co.jp', 'testtest', 0, null, '2020-02-01 00:00:00', '2020-02-01 00:00:00');
 
+-- 楽曲データ投入
 INSERT INTO music (
     id,
     registered_user_id,
@@ -128,18 +130,18 @@ INSERT INTO music (
     '2021-07-19 00:00:00'
 );
 
+-- スコアデータ投入
 INSERT INTO score (
     id, user_id, another_user_id, music_id, vibrato, kobushi, fall, shakuri, is_dam, is_joy, is_able_to_song_by_man, is_able_to_song_by_woman, is_fav, key_number, score, text, deleted, created, modified
 ) VALUES (
     1, 1, null, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 88.234, '長いフレーズに続くビブラートの耳触りがとても心地よいです。テクニックが際立っていますね。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00'
 );
 
-INSERT INTO score_comments (
-    id, score_id, comment_id
-) VALUES (
-    1, 1, 1
-);
+-- スコアとコメントの中間テーブル用データ投入
+INSERT INTO score_comments (id, score_id, comment_id) VALUES (1, 1, 1);
 
+-- コメントデータ投入
 INSERT INTO comments (id, text, deleted, created, modified) VALUES (1, '後半、息を多く吸う必要あり。ぎりぎり最高音程出せたけどミックスボイスを使えないとダメな感じ。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00');
 
+-- カテゴリーデータ投入
 INSERT INTO categories (id, parent_id, name, deleted, created, modified) VALUES (1, null, 'CM楽曲', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00');
