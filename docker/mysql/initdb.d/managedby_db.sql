@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
     created DATETIME NOT NULL,
     modified DATETIME NOT NULL,
     PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 楽曲の情報
 CREATE TABLE IF NOT EXISTS music (
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS music (
     created DATETIME NOT NULL,
     modified DATETIME NOT NULL,
     PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 楽曲のカラオケスコアの情報
 CREATE TABLE IF NOT EXISTS score (
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS score (
     created DATETIME NOT NULL,
     modified DATETIME NOT NULL,
     PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- スコアとコメントの中間テーブル
 CREATE TABLE IF NOT EXISTS score_comments (
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS score_comments (
     score_id INT NOT NULL,
     comment_id INT NOT NULL,
     PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- コメントの情報
 CREATE TABLE IF NOT EXISTS comments (
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS comments (
     created DATETIME NOT NULL,
     modified DATETIME NOT NULL,
     PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- カテゴリーの情報
 CREATE TABLE IF NOT EXISTS categories (
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS categories (
     created DATETIME NOT NULL,
     modified DATETIME NOT NULL,
     PRIMARY KEY (id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (1, 'admin', 'rsklv@test.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (2, 'origa', 'test@gmail.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
