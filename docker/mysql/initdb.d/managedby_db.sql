@@ -81,7 +81,7 @@ CREATE TABLE IF NOT EXISTS comments (
 CREATE TABLE IF NOT EXISTS categories (
     id INT NOT NULL AUTO_INCREMENT,
     parent_id INT,
-    name VARCHAR(100) NOT NULL,
+    name VARCHAR(1000) NOT NULL,
     deleted DATETIME DEFAULT NULL,
     created DATETIME NOT NULL,
     modified DATETIME NOT NULL,
@@ -133,3 +133,13 @@ INSERT INTO score (
 ) VALUES (
     1, 1, null, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 88.234, '長いフレーズに続くビブラートの耳触りがとても心地よいです。テクニックが際立っていますね。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00'
 );
+
+INSERT INTO score_comments (
+    id, score_id, comment_id
+) VALUES (
+    1, 1, 1
+);
+
+INSERT INTO comments (id, text, deleted, created, modified) VALUES (1, '後半、息を多く吸う必要あり。ぎりぎり最高音程出せたけどミックスボイスを使えないとダメな感じ。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00');
+
+INSERT INTO categories (id, parent_id, name, deleted, created, modified) VALUES (1, null, 'CM楽曲', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00');
