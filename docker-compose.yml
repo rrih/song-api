@@ -7,7 +7,7 @@ services:
         image: mysql:5.7
         restart: always
         environment:
-            MYSQL_USER: root
+            MYSQL_USER: user
             MYSQL_ROOT_PASSWORD: password
             MYSQL_DATABASE: managedby_db
             TZ: 'Asia/Tokyo'
