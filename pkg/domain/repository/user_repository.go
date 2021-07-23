@@ -45,6 +45,26 @@ func FindAll() []entity.User {
 	return users
 }
 
+// id からユーザを取得する
+func FindById(userId int) entity.User {
+	db := infrastructure.DbConn()
+	row, err := db.Query(
+		"select id, name, email, password, is_admin, deleted, created, modified from users where id = ?", userId,
+	)
+	defer row.Close()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	var u entity.User
+	for row.Next() {
+		err := row.Scan(&u.ID, &u.Name, &u.Email, &u.Password, &u.IsAdmin, &u.Deleted, &u.Created, &u.Modified)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	}
+	return u
+}
+
 func Insert(u entity.InsertedUser) {
 	db := infrastructure.DbConn()
 	// TODO: 日本時間にする
