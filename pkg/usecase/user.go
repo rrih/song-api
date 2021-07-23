@@ -22,3 +22,12 @@ func AddUsers(w http.ResponseWriter, r *http.Request) {
 	repository.Insert(p)
 	// TODO: 保存されたデータを返す
 }
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	// ユーザーIDを取得
+	// userId := r.Context().Value(USER_ID)
+	// fmt.Println(userId)
+	// request の body から entity に値を詰め直す
+	// 保存
+	// 更新されたデータを返す
+}
