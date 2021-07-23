@@ -27,12 +27,19 @@ func AddUsers(w http.ResponseWriter, r *http.Request) {
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	// ユーザーIDを取得
-	userId := strings.Trim(r.URL.Path, "/users/")
+	userId := strings.Trim(r.URL.Path, "/users/update/")
 	id, _ := strconv.Atoi(userId)
+	// TODO: http メソッドが put であるかチェックする
 	// TODO: id 存在するユーザIDか存在しないユーザIDかでエラーハンドリングする
 	// TODO: 異常系
 	var p entity.InsertedUser
 	json.NewDecoder(r.Body).Decode(&p)
 	repository.Update(p, id)
 	// TODO: repository.Update の結果を response として返す
+}
+
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	userId := strings.Trim(r.URL.Path, "/users/delete/")
+	id, _ := strconv.Atoi(userId)
+	repository.LogicalDeleteUser(id)
 }

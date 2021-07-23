@@ -11,7 +11,7 @@ import (
 func FindAll() []entity.User {
 	db := infrastructure.DbConn()
 	rows, err := db.Query(
-		"select id, name, email, password, is_admin, deleted, created, modified from users",
+		"select id, name, email, password, is_admin, deleted, created, modified from users where deleted is null",
 	)
 	if err != nil {
 		log.Fatal(err.Error())
@@ -63,6 +63,31 @@ func Update(u entity.InsertedUser, id int) {
 	_, err := db.Exec(
 		"update users set name = ?, email = ?, password = ?, modified = ? where id = ?",
 		u.Name, u.Email, u.Password, modified, id,
+	)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+// 論理削除
+func LogicalDeleteUser(id int) {
+	db := infrastructure.DbConn()
+	modified := time.Now()
+	deleted := time.Now()
+	_, err := db.Exec(
+		"update users set deleted = ?, modified = ? where id = ?",
+		deleted, modified, id,
+	)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}
+
+// 物理削除
+func PhysicalDeleteUser(id int) {
+	db := infrastructure.DbConn()
+	_, err := db.Exec(
+		"delete from users where id = ?", id,
 	)
 	if err != nil {
 		log.Fatal(err.Error())
