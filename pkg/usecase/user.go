@@ -18,6 +18,13 @@ func FindUsers(w http.ResponseWriter, r *http.Request) {
 	middleware.Response(w, nil, map[string]interface{}{"data": body})
 }
 
+func FindUser(w http.ResponseWriter, r *http.Request) {
+	userId := strings.Trim(r.URL.Path, "/users/")
+	id, _ := strconv.Atoi(userId)
+	body := repository.FindById(id)
+	middleware.Response(w, nil, map[string]interface{}{"data": body})
+}
+
 func AddUsers(w http.ResponseWriter, r *http.Request) {
 	var p entity.InsertedUser
 	json.NewDecoder(r.Body).Decode(&p)

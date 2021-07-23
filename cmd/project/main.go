@@ -17,6 +17,10 @@ func main() {
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		usecase.FindUsers(w, r)
 	})
+	// view
+	http.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
+		usecase.FindUser(w, r)
+	})
 	http.HandleFunc("/users/signup", func(w http.ResponseWriter, r *http.Request) {
 		usecase.AddUsers(w, r)
 	})
