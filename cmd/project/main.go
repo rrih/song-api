@@ -11,11 +11,11 @@ import (
 func main() {
 	// router
 	http.HandleFunc("/", Index)
-	http.HandleFunc("/users", usecase.FindUsers)
-	http.HandleFunc("/users/view/", usecase.FindUser)
-	http.HandleFunc("/users/post/", usecase.AddUsers)
-	http.HandleFunc("/users/update/", usecase.UpdateUser)
-	http.HandleFunc("/users/delete/", usecase.DeleteUser)
+	http.HandleFunc("/api/v1/users", usecase.FindUsers)
+	http.HandleFunc("/api/v1/users/view/", usecase.FindUser)
+	http.HandleFunc("/api/v1/users/post/", usecase.AddUsers)
+	http.HandleFunc("/api/v1/users/update/", usecase.UpdateUser)
+	http.HandleFunc("/api/v1/users/delete/", usecase.DeleteUser)
 
 	// TODO: 404、5XX 系のルーティング
 
