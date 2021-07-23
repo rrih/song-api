@@ -20,8 +20,12 @@ func main() {
 	http.HandleFunc("/users/signup", func(w http.ResponseWriter, r *http.Request) {
 		usecase.AddUsers(w, r)
 	})
-	http.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
+	// TODO: rest にするためまとめる
+	http.HandleFunc("/users/update/", func(w http.ResponseWriter, r *http.Request) {
 		usecase.UpdateUser(w, r)
+	})
+	http.HandleFunc("/users/delete/", func(w http.ResponseWriter, r *http.Request) {
+		usecase.DeleteUser(w, r)
 	})
 
 	// TODO: dev -> "localhost:8080", prod -> ":8080"
