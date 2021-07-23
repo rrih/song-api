@@ -56,3 +56,15 @@ func Insert(u entity.InsertedUser) {
 		log.Fatal(err.Error())
 	}
 }
+
+func Update(u entity.InsertedUser, id int) {
+	db := infrastructure.DbConn()
+	modified := time.Now()
+	_, err := db.Exec(
+		"update users set name = ?, email = ?, password = ?, modified = ? where id = ?",
+		u.Name, u.Email, u.Password, modified, id,
+	)
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+}

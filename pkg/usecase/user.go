@@ -3,6 +3,8 @@ package usecase
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/rrih/managedby/pkg/domain/entity"
 	"github.com/rrih/managedby/pkg/domain/repository"
@@ -21,4 +23,16 @@ func AddUsers(w http.ResponseWriter, r *http.Request) {
 	json.NewDecoder(r.Body).Decode(&p)
 	repository.Insert(p)
 	// TODO: 保存されたデータを返す
+}
+
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	// ユーザーIDを取得
+	userId := strings.Trim(r.URL.Path, "/users/")
+	id, _ := strconv.Atoi(userId)
+	// TODO: id 存在するユーザIDか存在しないユーザIDかでエラーハンドリングする
+	// TODO: 異常系
+	var p entity.InsertedUser
+	json.NewDecoder(r.Body).Decode(&p)
+	repository.Update(p, id)
+	// TODO: repository.Update の結果を response として返す
 }
