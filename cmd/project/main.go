@@ -17,11 +17,10 @@ func main() {
 	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
 		usecase.FindUsers(w, r)
 	})
-	// curl -X POST -H "Content-Type: application/json" -d '{"Name":"foo","Email":"bar@test.com","Password":"pass","IsAdmin":false}' localhost:8080/users/signup
 	http.HandleFunc("/users/signup", func(w http.ResponseWriter, r *http.Request) {
 		usecase.AddUsers(w, r)
 	})
-	http.HandleFunc("/users/update", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
 		usecase.UpdateUser(w, r)
 	})
 
