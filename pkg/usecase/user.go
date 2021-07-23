@@ -29,6 +29,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	// ユーザーIDを取得
 	userId := strings.Trim(r.URL.Path, "/users/update/")
 	id, _ := strconv.Atoi(userId)
+	// TODO: http メソッドが put であるかチェックする
 	// TODO: id 存在するユーザIDか存在しないユーザIDかでエラーハンドリングする
 	// TODO: 異常系
 	var p entity.InsertedUser
