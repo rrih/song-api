@@ -9,29 +9,20 @@ import (
 
 // bootstrap
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("managedby api"))
-	})
-
 	// router
-	http.HandleFunc("/users", func(w http.ResponseWriter, r *http.Request) {
-		usecase.FindUsers(w, r)
-	})
-	// view
-	http.HandleFunc("/users/", func(w http.ResponseWriter, r *http.Request) {
-		usecase.FindUser(w, r)
-	})
-	http.HandleFunc("/users/signup", func(w http.ResponseWriter, r *http.Request) {
-		usecase.AddUsers(w, r)
-	})
-	// TODO: rest にするためまとめる
-	http.HandleFunc("/users/update/", func(w http.ResponseWriter, r *http.Request) {
-		usecase.UpdateUser(w, r)
-	})
-	http.HandleFunc("/users/delete/", func(w http.ResponseWriter, r *http.Request) {
-		usecase.DeleteUser(w, r)
-	})
+	http.HandleFunc("/", Index)
+	http.HandleFunc("/users", usecase.FindUsers)
+	http.HandleFunc("/users/view/", usecase.FindUser)
+	http.HandleFunc("/users/post/", usecase.AddUsers)
+	http.HandleFunc("/users/update/", usecase.UpdateUser)
+	http.HandleFunc("/users/delete/", usecase.DeleteUser)
+
+	// TODO: 404、5XX 系のルーティング
 
 	// TODO: dev -> "localhost:8080", prod -> ":8080"
 	http.ListenAndServe("localhost:8080", nil)
+}
+
+func Index(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("managedby api"))
 }
