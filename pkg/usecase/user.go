@@ -22,7 +22,7 @@ func FindUsers(w http.ResponseWriter, r *http.Request) {
 
 func FindUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		userId := strings.Trim(r.URL.Path, "/users/view/")
+		userId := strings.Trim(r.URL.Path, "/api/v1/users/view/")
 		id, _ := strconv.Atoi(userId)
 		body := repository.FindById(id)
 		middleware.Response(w, nil, map[string]interface{}{"data": body})
@@ -41,7 +41,7 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		// ユーザーIDを取得
-		userId := strings.Trim(r.URL.Path, "/users/update/")
+		userId := strings.Trim(r.URL.Path, "/api/v1/users/update/")
 		id, _ := strconv.Atoi(userId)
 		// TODO: http メソッドが put であるかチェックする
 		// TODO: id 存在するユーザIDか存在しないユーザIDかでエラーハンドリングする
@@ -55,7 +55,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "DELETE" {
-		userId := strings.Trim(r.URL.Path, "/users/delete/")
+		userId := strings.Trim(r.URL.Path, "/api/v1/users/delete/")
 		id, _ := strconv.Atoi(userId)
 		repository.LogicalDeleteUser(id)
 	}
