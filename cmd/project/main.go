@@ -13,7 +13,7 @@ func main() {
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/api/v1/users", usecase.FindUsers)
 	http.HandleFunc("/api/v1/users/view/", usecase.FindUser)
-	http.HandleFunc("/api/v1/users/post/", usecase.AddUsers)
+	http.HandleFunc("/api/v1/users/post/", usecase.CreateUsers)
 	http.HandleFunc("/api/v1/users/update/", usecase.UpdateUser)
 	http.HandleFunc("/api/v1/users/delete/", usecase.DeleteUser)
 

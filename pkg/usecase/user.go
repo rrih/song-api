@@ -29,7 +29,7 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func AddUsers(w http.ResponseWriter, r *http.Request) {
+func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var p entity.InsertedUser
 		json.NewDecoder(r.Body).Decode(&p)
