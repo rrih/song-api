@@ -2,18 +2,23 @@ package entity
 
 type User struct {
 	ID       int     `json: "id"`
-	Name     string  `json: "string"`
-	Email    string  `json: "string"`
-	Password string  `json: "string"`
-	IsAdmin  bool    `json: "bool"`
-	Deleted  *string `json: "string"`
-	Created  string  `json: "string"`
-	Modified string  `json: "string"`
+	Name     string  `json: "name"`
+	Email    string  `json: "email"`
+	Password string  `json: "password"`
+	IsAdmin  bool    `json: "is_admin"`
+	Deleted  *string `json: "deleted"`
+	Created  string  `json: "created"`
+	Modified string  `json: "modified"`
 }
 
 type InsertedUser struct {
-	Name     string `json: "string"`
-	Email    string `json: "string"`
-	Password string `json: "string"`
-	IsAdmin  bool   `json: "bool"`
+	Name     string `json: "name"`
+	Email    string `json: "email"`
+	Password string `json: "password"`
+	IsAdmin  bool   `json: "is_admin"`
 }
+
+// type LoginForm struct {
+// 	Email    string `json: "email"`
+// 	Password string `json: "password"`
+// }

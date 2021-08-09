@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-	"strings"
+	"unicode/utf8"
 
 	"github.com/rrih/managedby/pkg/domain/entity"
 	"github.com/rrih/managedby/pkg/domain/repository"
@@ -22,7 +22,8 @@ func FindUsers(w http.ResponseWriter, r *http.Request) {
 
 func FindUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		userId := strings.Trim(r.URL.Path, "/api/v1/users/view/")
+		len := utf8.RuneCountInString("/api/v1/users/view/")
+		userId := r.URL.Path[len:]
 		id, _ := strconv.Atoi(userId)
 		body := repository.FindById(id)
 		middleware.Response(w, nil, map[string]interface{}{"data": body})
@@ -41,7 +42,8 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		// ユーザーIDを取得
-		userId := strings.Trim(r.URL.Path, "/api/v1/users/update/")
+		len := utf8.RuneCountInString("/api/v1/users/update/")
+		userId := r.URL.Path[len:]
 		id, _ := strconv.Atoi(userId)
 		// TODO: http メソッドが put であるかチェックする
 		// TODO: id 存在するユーザIDか存在しないユーザIDかでエラーハンドリングする
@@ -55,7 +57,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "DELETE" {
-		userId := strings.Trim(r.URL.Path, "/api/v1/users/delete/")
+		len := utf8.RuneCountInString("/api/v1/users/delete/")
+		userId := r.URL.Path[len:]
 		id, _ := strconv.Atoi(userId)
 		repository.LogicalDeleteUser(id)
 	}

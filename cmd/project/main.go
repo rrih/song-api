@@ -10,12 +10,12 @@ import (
 // bootstrap
 func main() {
 	// router
-	http.HandleFunc("/", Index)
-	http.HandleFunc("/api/v1/users", usecase.FindUsers)
-	http.HandleFunc("/api/v1/users/view/", usecase.FindUser)
-	http.HandleFunc("/api/v1/users/post/", usecase.CreateUsers)
-	http.HandleFunc("/api/v1/users/update/", usecase.UpdateUser)
-	http.HandleFunc("/api/v1/users/delete/", usecase.DeleteUser)
+	Router("/", Index)
+	Router("/api/v1/users", usecase.FindUsers)
+	Router("/api/v1/users/view/", usecase.FindUser)
+	Router("/api/v1/users/post/", usecase.CreateUsers)
+	Router("/api/v1/users/update/", usecase.UpdateUser)
+	Router("/api/v1/users/delete/", usecase.DeleteUser)
 
 	// TODO: 404、5XX 系のルーティング
 
@@ -25,4 +25,9 @@ func main() {
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("managedby api"))
+}
+
+// Router is wrapper
+func Router(pattern string, handler func(http.ResponseWriter, *http.Request)) {
+	http.HandleFunc(pattern, handler)
 }
