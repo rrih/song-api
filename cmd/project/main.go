@@ -13,9 +13,11 @@ func main() {
 	Router("/", Index)
 	Router("/api/v1/users", usecase.FindUsers)
 	Router("/api/v1/users/view/", usecase.FindUser)
-	Router("/api/v1/users/post/", usecase.CreateUsers)
+	Router("/api/v1/users/signup/", usecase.CreateUsers)
 	Router("/api/v1/users/update/", usecase.UpdateUser)
 	Router("/api/v1/users/delete/", usecase.DeleteUser)
+	// Router("/api/v1/users/signin/", usecase.SignIn)
+	// Router("/api/v1/users/signout", usercase.SignOut)
 
 	// TODO: 404、5XX 系のルーティング
 

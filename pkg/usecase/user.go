@@ -30,12 +30,35 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// ユーザー登録
 func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var p entity.InsertedUser
 		json.NewDecoder(r.Body).Decode(&p)
 		repository.Insert(p)
 		// TODO: 保存されたデータを返す
+		// TODO: クッキーをセットする
+		// &http.Cookie{}
+		// type Cookie struct {
+		// 	Name  string
+		// 	Value string
+		// 	Path       string    // optional
+		// 	Domain     string    // optional
+		// 	Expires    time.Time // optional
+		// 	RawExpires string    // for reading cookies only
+		// 	// MaxAge=0 means no 'Max-Age' attribute specified.
+		// 	// MaxAge<0 means delete cookie now, equivalently 'Max-Age: 0'
+		// 	// MaxAge>0 means Max-Age attribute present and given in seconds
+		// 	MaxAge   int
+		// 	Secure   bool
+		// 	HttpOnly bool
+		// 	SameSite SameSite
+		// 	Raw      string
+		// 	Unparsed []string // Raw text of unparsed attribute-value pairs
+		// }
+		// TODO: SetCookie みたいな関数に切り出す
+		// http.SetCookie(w, cookie)
+		// TODO: DeleteCookie みたいな関数も作る
 	}
 }
 
