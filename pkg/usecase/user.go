@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"unicode/utf8"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/rrih/managedby/pkg/domain/entity"
 	"github.com/rrih/managedby/pkg/domain/repository"
 	"github.com/rrih/managedby/pkg/interfaces/middleware"
@@ -31,34 +32,14 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // ユーザー登録
+// TODO: サインアップ系に命名修正する
 func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		var p entity.InsertedUser
 		json.NewDecoder(r.Body).Decode(&p)
 		repository.Insert(p)
-		// TODO: 保存されたデータを返す
-		// TODO: クッキーをセットする
-		// &http.Cookie{}
-		// type Cookie struct {
-		// 	Name  string
-		// 	Value string
-		// 	Path       string    // optional
-		// 	Domain     string    // optional
-		// 	Expires    time.Time // optional
-		// 	RawExpires string    // for reading cookies only
-		// 	// MaxAge=0 means no 'Max-Age' attribute specified.
-		// 	// MaxAge<0 means delete cookie now, equivalently 'Max-Age: 0'
-		// 	// MaxAge>0 means Max-Age attribute present and given in seconds
-		// 	MaxAge   int
-		// 	Secure   bool
-		// 	HttpOnly bool
-		// 	SameSite SameSite
-		// 	Raw      string
-		// 	Unparsed []string // Raw text of unparsed attribute-value pairs
-		// }
-		// TODO: SetCookie みたいな関数に切り出す
-		// http.SetCookie(w, cookie)
-		// TODO: DeleteCookie みたいな関数も作る
+		// TODO: response用の構造体定義してポインタ返す
+		// middleware.Response(w, nil, map[string]interface{}{"data": p})
 	}
 }
 
@@ -85,4 +66,21 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(userId)
 		repository.LogicalDeleteUser(id)
 	}
+}
+
+func Login(w http.ResponseWriter, r *http.Request) {
+	// bodyの読み出し
+	// ユーザ認証
+	// tokenの発行
+	// response
+}
+
+func CreateJwtToken(userID string) (string, error) {
+	// tokenの生成
+	// クレームの設定
+}
+
+func VerifyToken(tokenString string) (*jwt.Token, error) {
+	// jwtの検証
+	// jwt token を返す
 }

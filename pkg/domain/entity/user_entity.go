@@ -18,7 +18,12 @@ type InsertedUser struct {
 	IsAdmin  bool   `json: "is_admin"`
 }
 
-// type LoginForm struct {
-// 	Email    string `json: "email"`
-// 	Password string `json: "password"`
-// }
+//
+type LoginRequest struct {
+	Email    int    `json: "email"`
+	Password string `json: "password"`
+}
+
+type LoginResponse struct {
+	Token string `json: "token"`
+}
