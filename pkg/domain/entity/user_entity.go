@@ -20,7 +20,7 @@ type InsertedUser struct {
 
 //
 type LoginRequest struct {
-	Email    int    `json: "email"`
+	Email    string `json: "email"`
 	Password string `json: "password"`
 }
 
