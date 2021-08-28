@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -42,8 +43,16 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 // TODO: サインアップ系に命名修正する
 func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
+		// TODO: 絶対ここでパスワードのハッシュ化するのおかしいからあとで直す
+		// hash, err = PasswordHash()
 		var p entity.InsertedUser
 		json.NewDecoder(r.Body).Decode(&p)
+		// TODO: てきとうすぎるので直す
+		password, err := PasswordHash(p.Password)
+		if err != nil {
+			panic(err)
+		}
+		p.Password = password
 		repository.Insert(p)
 		// TODO: response用の構造体定義してポインタ返す
 		// middleware.Response(w, nil, map[string]interface{}{"data": p})
@@ -76,43 +85,47 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
-	// bodyの読み出し
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		// エラー処理
-		panic(err)
-	}
-	var req entity.LoginRequest
-	err = json.Unmarshal(body, &req)
-	if err != nil {
-		panic(err)
-	}
-	// ユーザ認証
-	// TODO: やっつけ実装すぎるのであとで整理
-	var hash string
-	db := infrastructure.DbConn()
-	row := db.QueryRow("SELECT password FROM users WHERE email=?", req.Email)
-	if err = row.Scan(&hash); err != nil {
-		// エラー処理
-		panic(err)
-		return
-	}
-	// パスワード検証
-	err = PasswordVerify(hash, req.Password)
-	if err != nil {
-		panic(err)
-	}
-	log.Println("login success: email = ", req.Email)
+	if r.Method == "POST" {
+		// bodyの読み出し
+		body, err := io.ReadAll(r.Body)
+		if err != nil {
+			// エラー処理
+			panic(err)
+		}
+		var req entity.LoginRequest
+		err = json.Unmarshal(body, &req)
+		if err != nil {
+			panic(err)
+		}
 
-	// tokenの発行
-	token, err := CreateJwtToken(req.Email)
-	if err != nil {
-		panic(err)
+		// ユーザ認証
+		// TODO: やっつけ実装すぎるのであとで整理
+		var hash string
+		db := infrastructure.DbConn()
+		row := db.QueryRow("SELECT password FROM users WHERE email=?", req.Email)
+		if err = row.Scan(&hash); err != nil {
+			// TODO: ここ多分該当データがなかった場合なのでエラーハンドリングあとでやる
+			// エラー処理
+			panic(err)
+			return
+		}
+		// パスワード検証
+		err = PasswordVerify(hash, req.Password)
+		if err != nil {
+			panic(err)
+		}
+
+		// tokenの発行
+		token, err := CreateJwtToken(req.Email)
+		if err != nil {
+			panic(err)
+		}
+		// response
+		// ex: {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzAwOTIwODUsInVzZXIiOiJyc2tsdnZAdGVzdC5kZGRkZGQifQ.5jo5phdc-WuVaeYEalz5qn0my3AJHHlv4wQwudBambY"}
+		entity.SuccessResponse(w, &entity.LoginResponse{
+			Token: token,
+		})
 	}
-	// response
-	entity.SuccessResponse(w, &entity.LoginResponse{
-		Token: token,
-	})
 }
 
 func CreateJwtToken(userID string) (string, error) {
@@ -121,7 +134,7 @@ func CreateJwtToken(userID string) (string, error) {
 	// クレームの設定
 	token.Claims = jwt.MapClaims{
 		"user": userID,
-		"exp":  time.Now().Add(time.Hour * 1).Unix(), // 有効期限を指定
+		"exp":  time.Now().Add(time.Hour * 1).Unix(), // 有効期限を指定(とりあえず1時間としている)
 	}
 	// 署名
 	var secretKey = "secret" // 任意の文字列
@@ -151,7 +164,19 @@ func PasswordVerify(hash, password string) error {
 	return bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 }
 
-func Logout(w http.ResponseWriter, r *http.Request) http.HandlerFunc {
+// パスワードのハッシュ化
+func PasswordHash(password string) (string, error) {
+	if len(password) > 70 {
+		return "", errors.New("password is too long.")
+	}
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hash), nil
+}
+
+func Logout(w http.ResponseWriter, r *http.Request) {
 	log.Println("logout")
 	// header から読み出し
 	tokenString := r.Header.Get("Authorization")
