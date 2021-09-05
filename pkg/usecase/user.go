@@ -34,7 +34,10 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 		len := utf8.RuneCountInString("/api/v1/users/view/")
 		userId := r.URL.Path[len:]
 		id, _ := strconv.Atoi(userId)
-		body := repository.FindById(id)
+		body, err := repository.FindById(id)
+		if err != nil {
+			middleware.Response(w, err, map[string]interface{}{"data": body})
+		}
 		middleware.Response(w, nil, map[string]interface{}{"data": body})
 	}
 }
@@ -191,6 +194,11 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	entity.SuccessResponse(w, &LogoutResponse{
 		Message: fmt.Sprintf("bye %s !", claims["user"]),
 	})
+}
+
+// ログインのために users.name と users.email を取得する
+func getLoginUserByAuthHeaderToken(token string) {
+
 }
 
 type LogoutResponse struct {

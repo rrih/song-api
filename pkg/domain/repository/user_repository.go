@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"log"
 	"time"
 
@@ -46,7 +47,7 @@ func FindAll() []entity.User {
 }
 
 // id からユーザを取得する
-func FindById(userId int) entity.User {
+func FindById(userId int) (entity.User, error) {
 	db := infrastructure.DbConn()
 	row, err := db.Query(
 		"select id, name, email, password, is_admin, deleted, created, modified from users where id = ?", userId,
@@ -62,7 +63,14 @@ func FindById(userId int) entity.User {
 			log.Fatal(err.Error())
 		}
 	}
-	return u
+	// TODO: 要検討。仮で該当データが存在しなかった場合を u.ID == 0 としてる
+	if u.ID == 0 {
+		err := errors.New("該当データが存在しません")
+		if err != nil {
+			return u, err
+		}
+	}
+	return u, nil
 }
 
 func Insert(u entity.InsertedUser) {
