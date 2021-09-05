@@ -21,6 +21,8 @@ import (
 )
 
 func FindUsers(w http.ResponseWriter, r *http.Request) {
+	// cors解決
+	middleware.SetupHeader(w, r)
 	// TODO: add cors
 	if r.Method == "GET" {
 		body := repository.FindAll()
@@ -30,14 +32,18 @@ func FindUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func FindUser(w http.ResponseWriter, r *http.Request) {
+	// cors解決
+	middleware.SetupHeader(w, r)
 	if r.Method == "GET" {
 		len := utf8.RuneCountInString("/api/v1/users/view/")
 		userId := r.URL.Path[len:]
 		id, _ := strconv.Atoi(userId)
 		body, err := repository.FindById(id)
 		if err != nil {
+			middleware.SetupHeader(w, r)
 			middleware.Response(w, err, map[string]interface{}{"data": body})
 		}
+		middleware.SetupHeader(w, r)
 		middleware.Response(w, nil, map[string]interface{}{"data": body})
 	}
 }
@@ -45,6 +51,8 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 // ユーザー登録
 // TODO: サインアップ系に命名修正する
 func CreateUsers(w http.ResponseWriter, r *http.Request) {
+	// cors解決
+	middleware.SetupHeader(w, r)
 	if r.Method == "POST" {
 		// TODO: 絶対ここでパスワードのハッシュ化するのおかしいからあとで直す
 		// hash, err = PasswordHash()
@@ -63,6 +71,8 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	// cors解決
+	middleware.SetupHeader(w, r)
 	if r.Method == "PUT" {
 		// ユーザーIDを取得
 		len := utf8.RuneCountInString("/api/v1/users/update/")
@@ -79,6 +89,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	// cors解決
+	middleware.SetupHeader(w, r)
 	if r.Method == "DELETE" {
 		len := utf8.RuneCountInString("/api/v1/users/delete/")
 		userId := r.URL.Path[len:]
@@ -88,6 +100,8 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	// cors解決
+	middleware.SetupHeader(w, r)
 	if r.Method == "POST" {
 		// bodyの読み出し
 		body, err := io.ReadAll(r.Body)
