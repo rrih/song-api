@@ -20,20 +20,9 @@ func Response(w http.ResponseWriter, err error, body map[string]interface{}) err
 }
 
 func SetupHeader(w http.ResponseWriter, r *http.Request) {
-	// w.Header().Add("Content-Type", "application/json")
-
-	// w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Add("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Origin", "http://localhost:3000")
-	// w.Header().Add("Access-Control-Allow-Origin", r.Header.Get("Origin"))
-	// w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Origin", "https://managedby-next.vercel.app")
 	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 	w.Header().Add("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 	w.Header().Add("Access-Control-Allow-Credentials", "true")
-
-	// w.Header().Set("Content-Type", "application/json")
-	// w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
-	// w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	// // rw.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-	// w.Header().Set("Access-Control-Allow-Headers", "*")
 }

@@ -121,21 +121,18 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		db := infrastructure.DbConn()
 		row := db.QueryRow("SELECT password FROM users WHERE email=?", req.Email)
 		if err = row.Scan(&hash); err != nil {
-			// TODO: ここ多分該当データがなかった場合なのでエラーハンドリングあとでやる
-			// エラー処理
-			panic(err)
-			return
+			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 		// パスワード検証
 		err = PasswordVerify(hash, req.Password)
 		if err != nil {
-			panic(err)
+			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 
 		// tokenの発行
 		token, err := CreateJwtToken(req.Email)
 		if err != nil {
-			panic(err)
+			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 		// response
 		// ex: {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzAwOTIwODUsInVzZXIiOiJyc2tsdnZAdGVzdC5kZGRkZGQifQ.5jo5phdc-WuVaeYEalz5qn0my3AJHHlv4wQwudBambY"}
