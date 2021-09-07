@@ -2,18 +2,14 @@ package middleware
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
 func Response(w http.ResponseWriter, err error, body map[string]interface{}) error {
-	// 一旦全部許可する
-	// TODO: あとでCORS再検討
-	fmt.Println(w)
-	fmt.Println("eeee")
 	if err == nil {
-		w.WriteHeader(http.StatusOK)
 		data, _ := json.Marshal(body)
+		w.WriteHeader(http.StatusOK)
+		w.Header().Add("Content-Type", "application/json")
 		w.Write(data)
 	}
 	return err

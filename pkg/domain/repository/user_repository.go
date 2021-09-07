@@ -73,6 +73,34 @@ func FindById(userId int) (entity.User, error) {
 	return u, nil
 }
 
+// email からユーザを取得する
+// とりあえず FindByID のコピペ
+func FindByEmail(email string) (entity.User, error) {
+	db := infrastructure.DbConn()
+	row, err := db.Query(
+		"select id, name, email, password, is_admin, deleted, created, modified from users where email = ?", email,
+	)
+	defer row.Close()
+	if err != nil {
+		log.Fatal(err.Error())
+	}
+	var u entity.User
+	for row.Next() {
+		err := row.Scan(&u.ID, &u.Name, &u.Email, &u.Password, &u.IsAdmin, &u.Deleted, &u.Created, &u.Modified)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
+	}
+	// TODO: 要検討。仮で該当データが存在しなかった場合を u.ID == 0 としてる
+	if u.ID == 0 {
+		err := errors.New("該当データが存在しません")
+		if err != nil {
+			return u, err
+		}
+	}
+	return u, nil
+}
+
 func Insert(u entity.InsertedUser) {
 	db := infrastructure.DbConn()
 	// TODO: 日本時間にする

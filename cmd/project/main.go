@@ -18,6 +18,7 @@ func main() {
 	http.HandleFunc("/api/v1/users/delete/", usecase.DeleteUser)
 	http.HandleFunc("/api/v1/users/signin/", usecase.Login)
 	// Router("/api/v1/users/signout", usercase.SignOut)
+	http.HandleFunc("/api/v1/mypage/", usecase.FindLoginUser)
 
 	// TODO: 404、5XX 系のルーティング
 

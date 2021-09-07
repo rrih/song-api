@@ -35,16 +35,15 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 	// cors解決
 	middleware.SetupHeader(w, r)
 	if r.Method == "GET" {
+		// リクエストのURLからuser_idを取り出す
 		len := utf8.RuneCountInString("/api/v1/users/view/")
 		userId := r.URL.Path[len:]
 		id, _ := strconv.Atoi(userId)
 		body, err := repository.FindById(id)
 		if err != nil {
-			middleware.SetupHeader(w, r)
 			middleware.Response(w, err, map[string]interface{}{"data": body})
 		}
-		middleware.SetupHeader(w, r)
-		middleware.Response(w, nil, map[string]interface{}{"data": body})
+		middleware.Response(w, err, map[string]interface{}{"data": body})
 	}
 }
 
@@ -159,16 +158,13 @@ func CreateJwtToken(userID string) (string, error) {
 	return tokenString, nil
 }
 
+// token の検証
 func VerifyToken(tokenString string) (*jwt.Token, error) {
 	// jwtの検証
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte("secret"), nil // CreateTokenにて指定した文字列を使います
+		return []byte("secret"), nil // CreateJwtToken で指定した任意の文字列
 	})
-	// これエラー用の分岐いらなそう
-	if err != nil {
-		return token, err
-	}
-	return token, nil
+	return token, err
 }
 
 // リクエストの読み出し→jwtの検証→レスポンスの作成
