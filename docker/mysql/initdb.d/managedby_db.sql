@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- 楽曲の情報
-CREATE TABLE IF NOT EXISTS music (
+CREATE TABLE IF NOT EXISTS songs (
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
     registered_user_id INT NOT NULL,
     category_id INT NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS score (
     id INT NOT NULL AUTO_INCREMENT,
     user_id INT NOT NULL,
     another_user_id INT, -- デュエットの場合
-    music_id INT NOT NULL,
+    song_id INT NOT NULL,
     vibrato int NOT NULL DEFAULT 0, -- ビブラート
     kobushi int NOT NULL DEFAULT 0, -- こぶし
     fall int NOT NULL DEFAULT 0, -- フォール
@@ -94,7 +94,7 @@ INSERT INTO users (id, name, email, password, is_admin, deleted, created, modifi
 INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (3, 'ryohei2', 'k.ryohei@test.co.jp', 'testtest', 0, null, '2020-02-01 00:00:00', '2020-02-01 00:00:00');
 
 -- 楽曲データ投入
-INSERT INTO music (
+INSERT INTO songs (
     id,
     registered_user_id,
     category_id,
@@ -132,7 +132,7 @@ INSERT INTO music (
 
 -- スコアデータ投入
 INSERT INTO score (
-    id, user_id, another_user_id, music_id, vibrato, kobushi, fall, shakuri, is_dam, is_joy, is_able_to_song_by_man, is_able_to_song_by_woman, is_fav, key_number, score, text, deleted, created, modified
+    id, user_id, another_user_id, song_id, vibrato, kobushi, fall, shakuri, is_dam, is_joy, is_able_to_song_by_man, is_able_to_song_by_woman, is_fav, key_number, score, text, deleted, created, modified
 ) VALUES (
     1, 1, null, 1, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 88.234, '長いフレーズに続くビブラートの耳触りがとても心地よいです。テクニックが際立っていますね。', null, '2021-07-19 00:00:00', '2021-07-19 00:00:00'
 );
