@@ -21,3 +21,21 @@ get /api/v1/users/view/1/
 ```
 curl -i http://localhost:8080/api/v1/users/view/1/
 ```
+
+ログインユーザー情報取得(上記ログイン後に取得するTokenを使用)
+```bash
+curl -i http://localhost:8080/api/v1/mypage/ \
+-H "accept: application/json" \
+-H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzEwNDE5MjMsInVzZXIiOiJmb29AYmFyLmNvbSJ9.xbXNXiSzIJ2J3hsPtVMkfsW4mvdU1mmx7tTaEMmeiUs"
+
+HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Headers: Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization
+Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE
+Access-Control-Allow-Origin: http://localhost:3000
+Content-Type: application/json
+Date: Tue, 07 Sep 2021 18:53:25 GMT
+Content-Length: 228
+
+{"data":{"ID":4,"Name":"test user","Email":"foo@bar.com","Password":"$2a$10$ZQZd4OeWAkRqUesnw7LsUeFcDrcIhDWpxbgjvbMvZcE.RFpqQpZny","IsAdmin":false,"Deleted":null,"Created":"2021-09-07 18:11:49","Modified":"2021-09-07 18:11:49"}}
+```
