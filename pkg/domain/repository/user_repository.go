@@ -66,9 +66,7 @@ func FindById(userId int) (entity.User, error) {
 	// TODO: 要検討。仮で該当データが存在しなかった場合を u.ID == 0 としてる
 	if u.ID == 0 {
 		err := errors.New("該当データが存在しません")
-		if err != nil {
-			return u, err
-		}
+		return u, err
 	}
 	return u, nil
 }

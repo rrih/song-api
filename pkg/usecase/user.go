@@ -40,7 +40,7 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(userId)
 		body, err := repository.FindById(id)
 		if err != nil {
-			middleware.Response(w, err, map[string]interface{}{"data": body})
+			entity.ErrorResponse(w, http.StatusNotFound, err.Error())
 		}
 		middleware.Response(w, err, map[string]interface{}{"data": body})
 	}
