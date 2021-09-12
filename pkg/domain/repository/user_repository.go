@@ -80,7 +80,8 @@ func FindByEmail(email string) (entity.User, error) {
 	row, err := db.Query(
 		"select id, name, email, password, is_admin, deleted, created, modified from users where email = ?", email,
 	)
-	defer row.Close()
+	// 一旦コメントアウト
+	// defer row.Close()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
