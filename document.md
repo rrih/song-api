@@ -18,7 +18,7 @@ Content-Type: text/plain; charset=utf-8
 
 ログアウト
 ```
-curl -i -H 'Content-Type:application/json' -d '{"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzEyMTY0OTAsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.FVgfEBtIaPqqPDfN8vN0ZwyKxFFVZl3G5OattW_KgVg"}' http://localhost:8080/api/v1/auth/logout/
+curl -i -H 'Content-Type:application/json' -d '{"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE0NDM3NTIsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.eRFNEwHNAbrGsQ9Wl7-ZImA902Q1bt2t_-VAWB1YndQ"}' http://localhost:8080/api/v1/auth/logout/
 ```
 
 ユーザー詳細取得

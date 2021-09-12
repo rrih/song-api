@@ -178,6 +178,7 @@ func getLoginUserByAuthHeaderToken(token string) {
 
 }
 
+// LogoutResponse はログアウトレスポンス用
 type LogoutResponse struct {
-	Message string `json: "message"`
+	Message string `json:"message"`
 }
