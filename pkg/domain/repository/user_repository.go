@@ -20,7 +20,7 @@ func FindAll() []entity.User {
 	user := entity.User{}
 	users := []entity.User{}
 	for rows.Next() {
-		var id int
+		var id string
 		var name string
 		var email string
 		var password string
@@ -52,7 +52,6 @@ func FindById(userId int) (entity.User, error) {
 	row, err := db.Query(
 		"select id, name, email, password, is_admin, deleted, created, modified from users where id = ?", userId,
 	)
-	defer row.Close()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -64,12 +63,13 @@ func FindById(userId int) (entity.User, error) {
 		}
 	}
 	// TODO: 要検討。仮で該当データが存在しなかった場合を u.ID == 0 としてる
-	if u.ID == 0 {
+	if u.ID == "0" {
 		err := errors.New("該当データが存在しません")
-		if err != nil {
-			return u, err
-		}
+		return u, err
 	}
+	// 一旦以下コメントアウト
+	// see: https://yaruki-strong-zero.hatenablog.jp/entry/go_sql_open_close
+	defer row.Close()
 	return u, nil
 }
 
@@ -80,7 +80,8 @@ func FindByEmail(email string) (entity.User, error) {
 	row, err := db.Query(
 		"select id, name, email, password, is_admin, deleted, created, modified from users where email = ?", email,
 	)
-	defer row.Close()
+	// 一旦コメントアウト
+	// defer row.Close()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -92,7 +93,7 @@ func FindByEmail(email string) (entity.User, error) {
 		}
 	}
 	// TODO: 要検討。仮で該当データが存在しなかった場合を u.ID == 0 としてる
-	if u.ID == 0 {
+	if u.ID == "0" {
 		err := errors.New("該当データが存在しません")
 		if err != nil {
 			return u, err

@@ -2,7 +2,6 @@ package infrastructure
 
 import (
 	"database/sql"
-	"fmt"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -24,7 +23,9 @@ func DbConn() (db *sql.DB) {
 	if os.Getenv("GO_ENV") == "" {
 		os.Setenv("GO_ENV", "development")
 	}
-	err := godotenv.Load(fmt.Sprintf("./.env"))
+	// err := godotenv.Load(fmt.Sprintf("./.env"))
+	// see: https://staticcheck.io/docs/checks#S1039
+	err := godotenv.Load(".env")
 	if err != nil {
 		panic(err.Error())
 	}

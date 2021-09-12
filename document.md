@@ -7,13 +7,18 @@ curl -H 'Content-Type:application/json' -d '{"name":"test user", "email":"foo@ba
 
 ログイン
 ```
-curl -i -H 'Content-Type:application/json' -d '{"email":"foo@bar.com", "password":"testtesttest"}' http://localhost:8080/api/v1/users/signin/
+curl -i -H 'Content-Type:application/json' -d '{"email":"test@gmail.com", "password":"testtesttest"}' http://localhost:8080/api/v1/auth/login/
 HTTP/1.1 200 OK
 Date: Sun, 05 Sep 2021 15:32:10 GMT
 Content-Length: 145
 Content-Type: text/plain; charset=utf-8
 
 {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzA4NTk1MzAsInVzZXIiOiJmb29AYmFyLmNvbSJ9.9G3gPXQ2ZzZ5pa7qMN1md8h55I5RDNFbWZfZOqEBgzE"}
+```
+
+ログアウト
+```
+curl -i -H 'Content-Type:application/json' -d '{"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE0NDM3NTIsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.eRFNEwHNAbrGsQ9Wl7-ZImA902Q1bt2t_-VAWB1YndQ"}' http://localhost:8080/api/v1/auth/logout/
 ```
 
 ユーザー詳細取得

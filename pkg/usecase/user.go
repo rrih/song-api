@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -41,9 +40,10 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 		id, _ := strconv.Atoi(userId)
 		body, err := repository.FindById(id)
 		if err != nil {
-			middleware.Response(w, err, map[string]interface{}{"data": body})
+			entity.ErrorResponse(w, http.StatusNotFound, err.Error())
+			return
 		}
-		middleware.Response(w, err, map[string]interface{}{"data": body})
+		entity.SuccessResponse(w, map[string]interface{}{"data": body})
 	}
 }
 
@@ -69,48 +69,21 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	// cors解決
-	middleware.SetupHeader(w, r)
-	if r.Method == "PUT" {
-		// ユーザーIDを取得
-		len := utf8.RuneCountInString("/api/v1/users/update/")
-		userId := r.URL.Path[len:]
-		id, _ := strconv.Atoi(userId)
-		// TODO: http メソッドが put であるかチェックする
-		// TODO: id 存在するユーザIDか存在しないユーザIDかでエラーハンドリングする
-		// TODO: 異常系
-		var p entity.InsertedUser
-		json.NewDecoder(r.Body).Decode(&p)
-		repository.Update(p, id)
-		// TODO: repository.Update の結果を response として返す
-	}
-}
-
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	// cors解決
-	middleware.SetupHeader(w, r)
-	if r.Method == "DELETE" {
-		len := utf8.RuneCountInString("/api/v1/users/delete/")
-		userId := r.URL.Path[len:]
-		id, _ := strconv.Atoi(userId)
-		repository.LogicalDeleteUser(id)
-	}
-}
-
 func Login(w http.ResponseWriter, r *http.Request) {
 	// cors解決
 	middleware.SetupHeader(w, r)
 	if r.Method == "POST" {
 		// bodyの読み出し
+		//lint:ignore compile fix
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			// エラー処理
 			panic(err)
 		}
-		var req entity.LoginRequest
-		err = json.Unmarshal(body, &req)
+		var loginRequest entity.LoginRequest
+		err = json.Unmarshal(body, &loginRequest)
 		if err != nil {
+			// TODO: エラー処理
 			panic(err)
 		}
 
@@ -118,25 +91,28 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		// TODO: やっつけ実装すぎるのであとで整理
 		var hash string
 		db := infrastructure.DbConn()
-		row := db.QueryRow("SELECT password FROM users WHERE email=?", req.Email)
+		row := db.QueryRow("SELECT password FROM users WHERE email=?", loginRequest.Email)
 		if err = row.Scan(&hash); err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
+
 		// パスワード検証
-		err = PasswordVerify(hash, req.Password)
+		err = PasswordVerify(hash, loginRequest.Password)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 
 		// tokenの発行
-		token, err := CreateJwtToken(req.Email)
+		token, err := CreateJwtToken(loginRequest.Email)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 		// response
 		// ex: {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzAwOTIwODUsInVzZXIiOiJyc2tsdnZAdGVzdC5kZGRkZGQifQ.5jo5phdc-WuVaeYEalz5qn0my3AJHHlv4wQwudBambY"}
+		user, err := repository.FindByEmail(loginRequest.Email)
 		entity.SuccessResponse(w, &entity.LoginResponse{
-			Token: token,
+			Token:  token,
+			UserID: user.ID,
 		})
 	}
 }
@@ -187,7 +163,6 @@ func PasswordHash(password string) (string, error) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	log.Println("logout")
 	// header から読み出し
 	tokenString := r.Header.Get("Authorization")
 	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
@@ -208,6 +183,7 @@ func getLoginUserByAuthHeaderToken(token string) {
 
 }
 
+// LogoutResponse はログアウトレスポンス用
 type LogoutResponse struct {
-	Message string `json: "message"`
+	Message string `json:"message"`
 }

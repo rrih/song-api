@@ -1,6 +1,10 @@
 CREATE DATABASE IF NOT EXISTS managedby_db;
 USE managedby_db;
 
+----------------------
+---- テーブルの定義 ----
+----------------------
+
 -- ユーザーの情報
 CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT UNIQUE,
@@ -88,10 +92,14 @@ CREATE TABLE IF NOT EXISTS categories (
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+----------------------
+----- データの投入 -----
+----------------------
+
 -- ユーザデータ投入
-INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (1, 'admin', 'rsklv@test.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
-INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (2, 'origa', 'test@gmail.com', 'testtest', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00');
-INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (3, 'ryohei2', 'k.ryohei@test.co.jp', 'testtest', 0, null, '2020-02-01 00:00:00', '2020-02-01 00:00:00');
+INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (1, 'admin', 'rsklv@test.com', '$2a$10$ZQZd4OeWAkRqUesnw7LsUeFcDrcIhDWpxbgjvbMvZcE.RFpqQpZny', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00'); -- パスワードは testtesttest
+INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (2, 'origa', 'test@gmail.com', '$2a$10$ZQZd4OeWAkRqUesnw7LsUeFcDrcIhDWpxbgjvbMvZcE.RFpqQpZny', 0, null, '2020-01-01 00:00:00', '2020-01-01 00:00:00'); -- パスワードは testtesttest
+INSERT INTO users (id, name, email, password, is_admin, deleted, created, modified) VALUES (3, 'ryohei2', 'k.ryohei@test.co.jp', '$2a$10$ZQZd4OeWAkRqUesnw7LsUeFcDrcIhDWpxbgjvbMvZcE.RFpqQpZny', 0, null, '2020-02-01 00:00:00', '2020-02-01 00:00:00'); -- パスワードは testtesttest
 
 -- 楽曲データ投入
 INSERT INTO songs (
