@@ -19,10 +19,10 @@ func SuccessResponse(w http.ResponseWriter, data interface{}) {
 }
 
 func ErrorResponse(w http.ResponseWriter, code int, message string) {
-	jsonData, err := json.Marshal(&Response{
-		Code:    code,
-		Message: message,
-	})
+	var res Response
+	res.Code = code
+	res.Message = message
+	jsonData, err := json.Marshal(map[string]interface{}{"data": res})
 	if err != nil {
 		panic(err)
 	}

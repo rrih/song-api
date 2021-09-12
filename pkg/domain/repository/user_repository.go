@@ -52,7 +52,6 @@ func FindById(userId int) (entity.User, error) {
 	row, err := db.Query(
 		"select id, name, email, password, is_admin, deleted, created, modified from users where id = ?", userId,
 	)
-	defer row.Close()
 	if err != nil {
 		log.Fatal(err.Error())
 	}
@@ -68,6 +67,9 @@ func FindById(userId int) (entity.User, error) {
 		err := errors.New("該当データが存在しません")
 		return u, err
 	}
+	// 一旦以下コメントアウト
+	// see: https://yaruki-strong-zero.hatenablog.jp/entry/go_sql_open_close
+	defer row.Close()
 	return u, nil
 }
 

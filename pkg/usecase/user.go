@@ -41,8 +41,9 @@ func FindUser(w http.ResponseWriter, r *http.Request) {
 		body, err := repository.FindById(id)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusNotFound, err.Error())
+			return
 		}
-		middleware.Response(w, err, map[string]interface{}{"data": body})
+		entity.SuccessResponse(w, map[string]interface{}{"data": body})
 	}
 }
 
