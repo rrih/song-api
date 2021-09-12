@@ -68,17 +68,6 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// func DeleteUser(w http.ResponseWriter, r *http.Request) {
-// 	// cors解決
-// 	middleware.SetupHeader(w, r)
-// 	if r.Method == "DELETE" {
-// 		len := utf8.RuneCountInString("/api/v1/users/delete/")
-// 		userId := r.URL.Path[len:]
-// 		id, _ := strconv.Atoi(userId)
-// 		repository.LogicalDeleteUser(id)
-// 	}
-// }
-
 func Login(w http.ResponseWriter, r *http.Request) {
 	// cors解決
 	middleware.SetupHeader(w, r)
@@ -114,7 +103,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
-		fmt.Println("koomade")
 		// response
 		// ex: {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzAwOTIwODUsInVzZXIiOiJyc2tsdnZAdGVzdC5kZGRkZGQifQ.5jo5phdc-WuVaeYEalz5qn0my3AJHHlv4wQwudBambY"}
 		entity.SuccessResponse(w, &entity.LoginResponse{
@@ -172,15 +160,12 @@ func PasswordHash(password string) (string, error) {
 func Logout(w http.ResponseWriter, r *http.Request) {
 	// header から読み出し
 	tokenString := r.Header.Get("Authorization")
-	fmt.Println(tokenString)
 	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
-	fmt.Println(tokenString)
 	// token の認証
 	token, err := VerifyToken(tokenString)
 	if err != nil {
 		entity.ErrorResponse(w, http.StatusBadRequest, err.Error())
 	}
-	fmt.Println(token)
 	// response
 	claims := token.Claims.(jwt.MapClaims)
 	entity.SuccessResponse(w, &LogoutResponse{
