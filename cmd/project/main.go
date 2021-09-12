@@ -13,12 +13,12 @@ func main() {
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/api/v1/users", usecase.FindUsers)
 	http.HandleFunc("/api/v1/users/view/", usecase.FindUser)
-	http.HandleFunc("/api/v1/users/signup/", usecase.CreateUsers)
-	http.HandleFunc("/api/v1/users/update/", usecase.UpdateUser)
-	http.HandleFunc("/api/v1/users/delete/", usecase.DeleteUser)
-	http.HandleFunc("/api/v1/users/signin/", usecase.Login)
-	// Router("/api/v1/users/signout", usercase.SignOut)
+	http.HandleFunc("/api/v1/auth/signup/", usecase.CreateUsers)
+	http.HandleFunc("/api/v1/auth/login/", usecase.Login)
+	http.HandleFunc("/api/v1/auth/logout/", usecase.Logout)
 	http.HandleFunc("/api/v1/mypage/", usecase.FindLoginUser)
+	http.HandleFunc("/api/v1/mypage/update/", usecase.UpdateLoginUser)
+	http.HandleFunc("/api/v1/mypage/delete/", usecase.DeleteAccount) // ここ論理削除
 
 	// TODO: 404、5XX 系のルーティング
 

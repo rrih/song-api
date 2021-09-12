@@ -1,5 +1,7 @@
 # managedby
 
+[![Test](https://github.com/rrih/managedby/actions/workflows/test.yml/badge.svg)](https://github.com/rrih/managedby/actions/workflows/test.yml)
+
 ### Run database server and web api by `air`.
 #### run api server
 ```bash

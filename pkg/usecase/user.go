@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -69,34 +68,16 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
-	// cors解決
-	middleware.SetupHeader(w, r)
-	if r.Method == "PUT" {
-		// ユーザーIDを取得
-		len := utf8.RuneCountInString("/api/v1/users/update/")
-		userId := r.URL.Path[len:]
-		id, _ := strconv.Atoi(userId)
-		// TODO: http メソッドが put であるかチェックする
-		// TODO: id 存在するユーザIDか存在しないユーザIDかでエラーハンドリングする
-		// TODO: 異常系
-		var p entity.InsertedUser
-		json.NewDecoder(r.Body).Decode(&p)
-		repository.Update(p, id)
-		// TODO: repository.Update の結果を response として返す
-	}
-}
-
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
-	// cors解決
-	middleware.SetupHeader(w, r)
-	if r.Method == "DELETE" {
-		len := utf8.RuneCountInString("/api/v1/users/delete/")
-		userId := r.URL.Path[len:]
-		id, _ := strconv.Atoi(userId)
-		repository.LogicalDeleteUser(id)
-	}
-}
+// func DeleteUser(w http.ResponseWriter, r *http.Request) {
+// 	// cors解決
+// 	middleware.SetupHeader(w, r)
+// 	if r.Method == "DELETE" {
+// 		len := utf8.RuneCountInString("/api/v1/users/delete/")
+// 		userId := r.URL.Path[len:]
+// 		id, _ := strconv.Atoi(userId)
+// 		repository.LogicalDeleteUser(id)
+// 	}
+// }
 
 func Login(w http.ResponseWriter, r *http.Request) {
 	// cors解決
@@ -133,10 +114,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
+		fmt.Println("koomade")
 		// response
 		// ex: {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzAwOTIwODUsInVzZXIiOiJyc2tsdnZAdGVzdC5kZGRkZGQifQ.5jo5phdc-WuVaeYEalz5qn0my3AJHHlv4wQwudBambY"}
 		entity.SuccessResponse(w, &entity.LoginResponse{
 			Token: token,
+			// User:
 		})
 	}
 }
@@ -187,15 +170,17 @@ func PasswordHash(password string) (string, error) {
 }
 
 func Logout(w http.ResponseWriter, r *http.Request) {
-	log.Println("logout")
 	// header から読み出し
 	tokenString := r.Header.Get("Authorization")
+	fmt.Println(tokenString)
 	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+	fmt.Println(tokenString)
 	// token の認証
 	token, err := VerifyToken(tokenString)
 	if err != nil {
 		entity.ErrorResponse(w, http.StatusBadRequest, err.Error())
 	}
+	fmt.Println(token)
 	// response
 	claims := token.Claims.(jwt.MapClaims)
 	entity.SuccessResponse(w, &LogoutResponse{

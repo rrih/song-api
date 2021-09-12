@@ -2,6 +2,7 @@ package entity
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -13,6 +14,7 @@ type Response struct {
 // TODO: 配置場所再検討
 func SuccessResponse(w http.ResponseWriter, data interface{}) {
 	jsonData, _ := json.Marshal(data)
+	fmt.Println(data)
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(jsonData)
