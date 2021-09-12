@@ -80,8 +80,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			// エラー処理
 			panic(err)
 		}
-		var req entity.LoginRequest
-		err = json.Unmarshal(body, &req)
+		var loginRequest entity.LoginRequest
+		err = json.Unmarshal(body, &loginRequest)
 		if err != nil {
 			// TODO: エラー処理
 			panic(err)
@@ -91,25 +91,25 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		// TODO: やっつけ実装すぎるのであとで整理
 		var hash string
 		db := infrastructure.DbConn()
-		row := db.QueryRow("SELECT password FROM users WHERE email=?", req.Email)
+		row := db.QueryRow("SELECT password FROM users WHERE email=?", loginRequest.Email)
 		if err = row.Scan(&hash); err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 
 		// パスワード検証
-		err = PasswordVerify(hash, req.Password)
+		err = PasswordVerify(hash, loginRequest.Password)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 
 		// tokenの発行
-		token, err := CreateJwtToken(req.Email)
+		token, err := CreateJwtToken(loginRequest.Email)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
 		// response
 		// ex: {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzAwOTIwODUsInVzZXIiOiJyc2tsdnZAdGVzdC5kZGRkZGQifQ.5jo5phdc-WuVaeYEalz5qn0my3AJHHlv4wQwudBambY"}
-		user, err := repository.FindByEmail(req.Email)
+		user, err := repository.FindByEmail(loginRequest.Email)
 		entity.SuccessResponse(w, &entity.LoginResponse{
 			Token:  token,
 			UserID: user.ID,

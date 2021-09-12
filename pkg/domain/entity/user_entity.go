@@ -29,5 +29,5 @@ type LoginRequest struct {
 // LoginResponse はログインレスポンス用
 type LoginResponse struct {
 	Token  string `json:"token"`
-	UserID string `json:"userId"`
+	UserID string `json:"login_user_id"`
 }
