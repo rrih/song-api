@@ -74,6 +74,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	middleware.SetupHeader(w, r)
 	if r.Method == "POST" {
 		// bodyの読み出し
+		//lint:ignore compile fix
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			// エラー処理
@@ -82,6 +83,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		var req entity.LoginRequest
 		err = json.Unmarshal(body, &req)
 		if err != nil {
+			// TODO: エラー処理
 			panic(err)
 		}
 
@@ -93,6 +95,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		if err = row.Scan(&hash); err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
+
 		// パスワード検証
 		err = PasswordVerify(hash, req.Password)
 		if err != nil {
@@ -106,9 +109,10 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		}
 		// response
 		// ex: {"Token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzAwOTIwODUsInVzZXIiOiJyc2tsdnZAdGVzdC5kZGRkZGQifQ.5jo5phdc-WuVaeYEalz5qn0my3AJHHlv4wQwudBambY"}
+		user, err := repository.FindByEmail(req.Email)
 		entity.SuccessResponse(w, &entity.LoginResponse{
-			Token: token,
-			// User:
+			Token:  token,
+			UserID: user.ID,
 		})
 	}
 }

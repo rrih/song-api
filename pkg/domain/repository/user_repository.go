@@ -20,7 +20,7 @@ func FindAll() []entity.User {
 	user := entity.User{}
 	users := []entity.User{}
 	for rows.Next() {
-		var id int
+		var id string
 		var name string
 		var email string
 		var password string
@@ -63,7 +63,7 @@ func FindById(userId int) (entity.User, error) {
 		}
 	}
 	// TODO: 要検討。仮で該当データが存在しなかった場合を u.ID == 0 としてる
-	if u.ID == 0 {
+	if u.ID == "0" {
 		err := errors.New("該当データが存在しません")
 		return u, err
 	}
@@ -93,7 +93,7 @@ func FindByEmail(email string) (entity.User, error) {
 		}
 	}
 	// TODO: 要検討。仮で該当データが存在しなかった場合を u.ID == 0 としてる
-	if u.ID == 0 {
+	if u.ID == "0" {
 		err := errors.New("該当データが存在しません")
 		if err != nil {
 			return u, err
