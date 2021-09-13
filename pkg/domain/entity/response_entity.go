@@ -12,7 +12,7 @@ type Response struct {
 
 // TODO: 配置場所再検討
 func SuccessResponse(w http.ResponseWriter, data interface{}) {
-	jsonData, _ := json.Marshal(data)
+	jsonData, _ := json.Marshal(map[string]interface{}{"data": data})
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/json")
 	w.Write(jsonData)

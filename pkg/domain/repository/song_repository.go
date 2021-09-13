@@ -98,7 +98,9 @@ func FindSongByID(songID int) (entity.Song, error) {
 }
 
 // SaveSong 曲の保存
-func SaveSong(s entity.Song) {
+// TODO: ref: https://qiita.com/mizumizue/items/12d504eead84214af0e1
+// こちらを参考にinsertしたレコードのidを取得して返す。
+func SaveSong(s entity.Song) error {
 	db := infrastructure.DbConn()
 	// TODO: 日本時間にする
 	created, modified := time.Now(), time.Now()
@@ -115,9 +117,7 @@ func SaveSong(s entity.Song) {
 		s.Source, s.URL, s.IsAnimeVideoDam, s.IsAnimeVideoJoy, s.IsOfficialVideoDam,
 		s.IsOfficialVideoJoy, s.StartSinging, s.Deleted, created, modified,
 	)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	return err
 }
 
 // UpdateSong 曲の更新
