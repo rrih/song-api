@@ -2,6 +2,6 @@ package usecase
 
 import "testing"
 
-func TestMain(t *testing.T) {
-	t.Skip("skip")
+func TestFindAllSongs(t *testing.T) {
+	t.Skip()
 }

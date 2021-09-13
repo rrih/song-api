@@ -9,7 +9,7 @@ import (
 	"github.com/rrih/managedby/pkg/infrastructure"
 )
 
-func FindAll() []entity.User {
+func FindAllUsers() []entity.User {
 	db := infrastructure.DbConn()
 	rows, err := db.Query(
 		"select id, name, email, password, is_admin, deleted, created, modified from users where deleted is null",

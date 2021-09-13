@@ -22,9 +22,8 @@ import (
 func FindUsers(w http.ResponseWriter, r *http.Request) {
 	// cors解決
 	middleware.SetupHeader(w, r)
-	// TODO: add cors
 	if r.Method == "GET" {
-		body := repository.FindAll()
+		body := repository.FindAllUsers()
 		// TODO: エラー時を想定していない
 		middleware.Response(w, nil, map[string]interface{}{"data": body})
 	}
