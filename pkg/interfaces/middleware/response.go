@@ -2,13 +2,11 @@ package middleware
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 )
 
 func Response(w http.ResponseWriter, err error, body map[string]interface{}) {
 	if err == nil {
-		fmt.Println(err)
 		data, _ := json.Marshal(body)
 		w.WriteHeader(http.StatusOK)
 		w.Header().Add("Content-Type", "application/json")
