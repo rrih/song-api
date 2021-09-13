@@ -44,3 +44,10 @@ Content-Length: 228
 
 {"data":{"ID":4,"Name":"test user","Email":"foo@bar.com","Password":"$2a$10$ZQZd4OeWAkRqUesnw7LsUeFcDrcIhDWpxbgjvbMvZcE.RFpqQpZny","IsAdmin":false,"Deleted":null,"Created":"2021-09-07 18:11:49","Modified":"2021-09-07 18:11:49"}}
 ```
+
+曲作成
+```
+curl http://localhost:8080/api/v1/songs/add/ \
+-H "Authorization: Bearer Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzEwNDE5MjMsInVzZXIiOiJmb29AYmFyLmNvbSJ9.xbXNXiSzIJ2J3hsPtVMkfsW4mvdU1mmx7tTaEMmeiUs" -d '{"registered_user_id":"2", "category_id":"2", "name":"hageの歌", "singer_name":"某兄貴", "composer_name":"ベートーベン", "source":"名探偵コナンのOP", "url":"http://ssss.ss", "is_anime_video_dam":true, "is_anime_video_joy":true, "is_official_video_dam":true, "is_official_video_joy":false, "start_singing":"YOSEI 夏が君としたくなる", "deleted":null, "created":"2000-02-02 00:00:00", "modified":"2000-02-02 00:00:00"}'
+{"data":{"code":400,"message":"invalid character '\\x06' in string literal"}}
+```

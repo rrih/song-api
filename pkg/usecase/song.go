@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 	"unicode/utf8"
 
 	"github.com/rrih/managedby/pkg/domain/entity"
@@ -41,6 +42,17 @@ func FindSong(w http.ResponseWriter, r *http.Request) {
 func CreateSong(w http.ResponseWriter, r *http.Request) {
 	middleware.SetupHeader(w, r)
 	if r.Method == "POST" {
+		// TODO: 認証判定切り出す
+		// header から読み出し
+		tokenString := r.Header.Get("Authorization")
+		tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+		// token の認証
+		_, err := VerifyToken(tokenString)
+		if err != nil {
+			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
+			return
+		}
+		// ログイン中でないとsongを作成することはできない
 		var song entity.Song
 		json.NewDecoder(r.Body).Decode(&song)
 		repository.SaveSong(song)
