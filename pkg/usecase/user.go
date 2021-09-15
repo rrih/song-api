@@ -32,6 +32,10 @@ func FindUsers(w http.ResponseWriter, r *http.Request) {
 func FindUser(w http.ResponseWriter, r *http.Request) {
 	// cors解決
 	middleware.SetupHeader(w, r)
+	_, err := IsLogin(w, r)
+	if err != nil {
+		return
+	}
 	if r.Method == "GET" {
 		// リクエストのURLからuser_idを取り出す
 		len := utf8.RuneCountInString("/api/v1/users/view/")
@@ -73,7 +77,6 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	middleware.SetupHeader(w, r)
 	if r.Method == "POST" {
 		// bodyの読み出し
-		//lint:ignore compile fix
 		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			// エラー処理

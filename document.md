@@ -8,6 +8,7 @@ curl -H 'Content-Type:application/json' -d '{"name":"test user", "email":"foo@ba
 ログイン
 ```
 curl -i -H 'Content-Type:application/json' -d '{"email":"test@gmail.com", "password":"testtesttest"}' http://localhost:8080/api/v1/auth/login/
+
 HTTP/1.1 200 OK
 Date: Sun, 05 Sep 2021 15:32:10 GMT
 Content-Length: 145
@@ -18,20 +19,22 @@ Content-Type: text/plain; charset=utf-8
 
 ログアウト
 ```
-curl -i -H 'Content-Type:application/json' -d '{"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE0NDM3NTIsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.eRFNEwHNAbrGsQ9Wl7-ZImA902Q1bt2t_-VAWB1YndQ"}' http://localhost:8080/api/v1/auth/logout/
+curl -i -H 'Content-Type:application/json' -d '{"Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE3MjE5OTMsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.IybN5Wrq8s1SqNSKK5C00hoZtc2Qgy_aCgNZS4oVOdo"}' http://localhost:8080/api/v1/auth/logout/
 ```
 
 ユーザー詳細取得
 get /api/v1/users/view/1/
 ```
-curl -i http://localhost:8080/api/v1/users/view/1/
+curl -i http://localhost:8080/api/v1/users/view/3 \
+-H "accept: application/json" \
+-H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE3MjU0MzEsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.5xW9uiMi9SE9aZxvhTyHNGNQBr3BUDubGSTOVtMAhA8"
 ```
 
 ログインユーザー情報取得(上記ログイン後に取得するTokenを使用)
 ```bash
 curl -i http://localhost:8080/api/v1/mypage/ \
 -H "accept: application/json" \
--H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzEwNDE5MjMsInVzZXIiOiJmb29AYmFyLmNvbSJ9.xbXNXiSzIJ2J3hsPtVMkfsW4mvdU1mmx7tTaEMmeiUs"
+-H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE3MjU0MzEsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.5xW9uiMi9SE9aZxvhTyHNGNQBr3BUDubGSTOVtMAhA8"
 
 HTTP/1.1 200 OK
 Access-Control-Allow-Credentials: true
@@ -48,6 +51,7 @@ Content-Length: 228
 曲作成
 ```
 curl http://localhost:8080/api/v1/songs/add/ \
--H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE1NjIyMTYsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.cmL1qij6edCVqctnp_it3MUFi9LhM2KaAfu1e0e2b-c" -d '{"registered_user_id":"2", "category_id":"2", "name":"hageの歌", "singer_name":"某兄貴", "composer_name":"ベートーベン", "source":"名探偵コナンのOP", "url":"http://ssss.ss", "is_anime_video_dam":true, "is_anime_video_joy":true, "is_official_video_dam":true, "is_official_video_joy":false, "start_singing":"YOSEI 夏が君としたくなる", "deleted":null, "created":"2000-02-02 00:00:00", "modified":"2000-02-02 00:00:00"}'
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE3MTg3ODAsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.JtLRyFfVg_Teqrjw_xICzxsTZKJL17DGSCsxA3lbgZQ" -d '{"registered_user_id":"2", "category_id":"2", "name":"hageの歌", "singer_name":"某兄貴", "composer_name":"ベートーベン", "source":"名探偵コナンのOP", "url":"http://ssss.ss", "is_anime_video_dam":true, "is_anime_video_joy":true, "is_official_video_dam":true, "is_official_video_joy":false, "start_singing":"YOSEI 夏が君としたくなる", "deleted":null, "created":"2000-02-02 00:00:00", "modified":"2000-02-02 00:00:00"}'
+
 {"data":{"code":400,"message":"invalid character '\\x06' in string literal"}}
 ```

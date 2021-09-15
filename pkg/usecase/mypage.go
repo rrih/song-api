@@ -19,16 +19,37 @@ func FindLoginUser(w http.ResponseWriter, r *http.Request) {
 	// ログイン判定
 	// 認証チェック
 	// headerからjwtを確認
-	tokenString := r.Header.Get("Authorization")
-	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
-	token, err := VerifyToken(tokenString)
+	// TODO: 以下の処理切り出す
+	// input -> request
+	// output -> error or void
+	IsLogin(w, r)
+	// tokenString := r.Header.Get("Authorization")
+	// tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+	// token, err := VerifyToken(tokenString)
+	// if err != nil {
+	// 	entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
+	// }
+	token, err := IsLogin(w, r)
 	if err != nil {
-		entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
+		// エラーなら終了
+		return
 	}
 	claims := token.Claims.(jwt.MapClaims)
 	email := claims["user"]
 	body, err := repository.FindByEmail(email.(string))
 	middleware.Response(w, err, map[string]interface{}{"data": body})
+}
+
+// IsLogin header から jwt を確認してログイン中ならスルー、未ログインならerror response
+func IsLogin(w http.ResponseWriter, r *http.Request) (*jwt.Token, error) {
+	tokenString := r.Header.Get("Authorization")
+	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+	token, err := VerifyToken(tokenString)
+	if err != nil {
+		entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
+		return nil, err
+	}
+	return token, err
 }
 
 // ログイン時、ログインユーザーの情報を更新する機能
