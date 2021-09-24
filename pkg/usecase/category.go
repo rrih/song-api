@@ -20,7 +20,8 @@ func FindCategories(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// FindSong idから特定のカテゴリーを取得
+// FindCategory idから特定のカテゴリーを取得
+// 使用するか要検討
 func FindCategory(w http.ResponseWriter, r *http.Request) {
 	middleware.SetupHeader(w, r)
 	if r.Method == "GET" {
