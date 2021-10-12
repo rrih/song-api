@@ -1,6 +1,6 @@
 module github.com/rrih/managedby
 
-go 1.16
+go 1.17
 
 require (
 	github.com/cosmtrek/air v1.27.3 // indirect

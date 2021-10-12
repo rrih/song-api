@@ -5,7 +5,7 @@
 ```bash
 touch .env
 cp .env.example .env
-go get -u github.com/cosmtrek/air
+go install github.com/cosmtrek/air
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 air -v
@@ -20,8 +20,9 @@ docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 
 #### reset container
 ```bash
-docker rm -f managedby_db
+docker-compose down --rmi all --volumes --remove-orphans
 docker-compose up --build
+docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 ```
 
 ### author
