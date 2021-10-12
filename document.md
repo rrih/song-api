@@ -1,4 +1,32 @@
-## example
+# 開発環境構築
+dbサーバーとapiサーバーをそれぞれ起動させる必要がある。  
+それぞれ以下に記述。
+#### backend起動
+```bash
+touch .env
+cp .env.example .env
+go install github.com/cosmtrek/air
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+air -v
+air
+```
+
+#### dbサーバ起動
+cliでmysqlコンテナに入る
+```bash
+docker-compose build && docker-compose up
+docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
+```
+
+#### コンテナの初期化
+```bash
+docker-compose down --rmi all --volumes --remove-orphans
+docker-compose up --build
+docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
+```
+
+## api使用例
 
 ユーザー登録
 ```
