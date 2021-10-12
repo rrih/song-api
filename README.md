@@ -1,4 +1,4 @@
-# managedby
+# songscoreonline
 
 ### Run database server and web api by `air`.
 #### run api server
@@ -24,5 +24,3 @@ docker rm -f managedby_db
 docker-compose up --build
 ```
 
-### author
-[@rrih_dev](https://twitter.com/rrih_dev)
