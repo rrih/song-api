@@ -1,6 +1,7 @@
 module github.com/rrih/managedby
 
-go 1.17
+go 1.16
+// +heroku goVersion go1.16
 
 require (
 	github.com/cosmtrek/air v1.27.3 // indirect
