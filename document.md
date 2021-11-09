@@ -35,6 +35,13 @@ docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 curl -H 'Content-Type:application/json' -d '{"name":"test user", "email":"foo@bar.com", "password":"testtesttest"}' http://localhost:8080/api/v1/users/signup/
 ```
 
+## deploy
+```
+go build -o bin/project -v .
+heroku local web # localで実行
+git push heroku master # deploy
+```
+
 ログイン
 ```
 curl -i -H 'Content-Type:application/json' -d '{"email":"test@gmail.com", "password":"testtesttest"}' http://localhost:8080/api/v1/auth/login/

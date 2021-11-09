@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -10,6 +11,7 @@ import (
 
 // bootstrap
 func main() {
+	fmt.Println(os.Getenv("PORT") != "")
 	// router
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/api/v1/users", usecase.FindUsers)
