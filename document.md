@@ -1,6 +1,8 @@
 # 開発環境構築
-dbサーバーとapiサーバーをそれぞれ起動させる必要がある。  
+フロントエンドの開発環境は[こちら](https://github.com/rrih/songscoreonline-next#songscoreonline-next)  
+バックエンドの開発環境はdbサーバーとapiサーバーをそれぞれ起動させる必要がある。  
 それぞれ以下に記述。
+
 #### backend起動
 ```bash
 touch .env
@@ -55,14 +57,14 @@ get /api/v1/users/view/1/
 ```
 curl -i http://localhost:8080/api/v1/users/view/3 \
 -H "accept: application/json" \
--H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE3MjU0MzEsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.5xW9uiMi9SE9aZxvhTyHNGNQBr3BUDubGSTOVtMAhA8"
+-H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQwNTQ2NTQsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.4K2vZk8E7likU-ipzatTwwGCoyI9O---hMMBBaysSDc"
 ```
 
 ログインユーザー情報取得(上記ログイン後に取得するTokenを使用)
 ```bash
 curl -i http://localhost:8080/api/v1/mypage/ \
 -H "accept: application/json" \
--H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzE3MjU0MzEsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.5xW9uiMi9SE9aZxvhTyHNGNQBr3BUDubGSTOVtMAhA8"
+-H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQwNTQ2NTQsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.4K2vZk8E7likU-ipzatTwwGCoyI9O---hMMBBaysSDc"
 
 HTTP/1.1 200 OK
 Access-Control-Allow-Credentials: true

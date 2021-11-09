@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/rrih/managedby/pkg/usecase"
@@ -28,8 +29,12 @@ func main() {
 
 	// TODO: 404、5XX 系のルーティング
 
-	// TODO: dev -> "localhost:8080", prod -> ":8080"
-	http.ListenAndServe("localhost:8080", nil)
+	port := "localhost:8080"
+	isProd := os.Getenv("PORT") != ""
+	if isProd {
+		port = ":" + os.Getenv("PORT")
+	}
+	http.ListenAndServe(port, nil)
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
