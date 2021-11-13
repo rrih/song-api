@@ -36,10 +36,10 @@ curl -H 'Content-Type:application/json' -d '{"name":"test user", "email":"foo@ba
 ```
 
 ## deploy
+事前ビルド、Procfile等は heroku の master への push のみで完結する
 ```
-go build -o bin/project -v .
-heroku local web # localで実行
-git push heroku master # deploy
+# deploy to heroku
+git push heroku master
 ```
 
 ログイン

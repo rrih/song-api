@@ -1,19 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/rrih/managedby/pkg/interfaces/middleware"
 	"github.com/rrih/managedby/pkg/usecase"
 )
 
 // bootstrap
 func main() {
-	fmt.Println(os.Getenv("PORT") != "")
 	// router
-	http.HandleFunc("/", Index)
 	http.HandleFunc("/api/v1/users", usecase.FindUsers)
 	http.HandleFunc("/api/v1/users/view/", usecase.FindUser)
 	http.HandleFunc("/api/v1/auth/signup/", usecase.CreateUsers)
@@ -30,6 +28,7 @@ func main() {
 	http.HandleFunc("/api/v1/songs/delete/", usecase.DeleteSong)
 
 	// TODO: 404、5XX 系のルーティング
+	http.HandleFunc("/", NotFound)
 
 	port := "localhost:8080"
 	isProd := os.Getenv("PORT") != ""
@@ -39,6 +38,7 @@ func main() {
 	http.ListenAndServe(port, nil)
 }
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("managedby api"))
+func NotFound(w http.ResponseWriter, r *http.Request) {
+	middleware.SetupHeader(w, r)
+	w.Write([]byte("404 Not Found"))
 }
