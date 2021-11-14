@@ -25,10 +25,16 @@ func DbConn() (db *sql.DB) {
 	}
 	// err := godotenv.Load(fmt.Sprintf("./.env"))
 	// see: https://staticcheck.io/docs/checks#S1039
-	err := godotenv.Load(".env")
-	if err != nil {
-		panic(err.Error())
+	isProd := os.Getenv("PORT") != ""
+	if isProd {
+		// 本番では heroku config を読み込む
+	} else {
+		err := godotenv.Load(".env")
+		if err != nil {
+			panic(err.Error())
+		}
 	}
+
 	var (
 		user           = os.Getenv("MYSQL_USER")
 		password       = os.Getenv("MYSQL_PASSWORD")
