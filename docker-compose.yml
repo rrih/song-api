@@ -1,6 +1,28 @@
 version: '3.3'
 
 services:
+    api:
+        build:
+            context: .
+            dockerfile: ./Dockerfile
+        ports:
+            - 8080:8080
+        container_name: sso-api
+        image: sso-api:latest
+        volumes:
+            - ./:/go/src
+            # - go_path:/go
+        # command: ["./start.sh"]
+        command: ["air"]
+        tty:
+            true
+        depends_on:
+            - db
+        links:
+            - db
+        networks:
+            - external-api
+            - internal-db
     db:
         build: ./docker/mysql
         container_name: managedby_db
@@ -18,3 +40,9 @@ services:
             - ./docker/mysql/initdb.d:/docker-entrypoint-initdb.d/
             - ./docker/mysql/conf.d:/etc/mysql/conf.d
             - ./log/mysql:/var/log/mysql
+        networks:
+            - internal-db
+networks:
+    external-api:
+        external: true
+    internal-db:
