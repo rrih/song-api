@@ -23,8 +23,7 @@ docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 
 #### コンテナの初期化
 ```bash
-docker-compose down --rmi all --volumes --remove-orphans
-docker-compose up --build
+docker-compose up -d
 docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 ```
 
@@ -64,7 +63,7 @@ get /api/v1/users/view/1/
 ```
 curl -i http://localhost:8080/api/v1/users/view/3 \
 -H "accept: application/json" \
--H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzQwNTQ2NTQsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.4K2vZk8E7likU-ipzatTwwGCoyI9O---hMMBBaysSDc"
+-H "Authorization:eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2MzcwNzUyNDIsInVzZXIiOiJ0ZXN0QGdtYWlsLmNvbSJ9.porJMOvQFjv8Wnh8-y0c7Z2dT7H86HW7L5uykWQC6UU"
 ```
 
 ログインユーザー情報取得(上記ログイン後に取得するTokenを使用)
