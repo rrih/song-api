@@ -9,6 +9,7 @@ import (
 
 	"github.com/rrih/managedby/pkg/domain/entity"
 	"github.com/rrih/managedby/pkg/domain/repository"
+	"github.com/rrih/managedby/pkg/infrastructure"
 	"github.com/rrih/managedby/pkg/interfaces/middleware"
 )
 
@@ -16,7 +17,12 @@ import (
 func FindSongs(w http.ResponseWriter, r *http.Request) {
 	middleware.SetupHeader(w, r)
 	if r.Method == "GET" {
-		body := repository.FindAllSongs()
+		db := infrastructure.DbConn()
+		body, err := repository.FindAllSongs(db)
+		if err != nil {
+			entity.ErrorResponse(w, http.StatusNotFound, err.Error())
+			return
+		}
 		middleware.Response(w, nil, map[string]interface{}{"data": body})
 	}
 }

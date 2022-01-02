@@ -11,14 +11,14 @@ go install github.com/cosmtrek/air
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 air -v
-air
+air # ターミナルの窓固定(1)
 ```
 
 #### dbサーバ起動
 cliでmysqlコンテナに入る
 ```bash
-docker-compose build && docker-compose up
-docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
+docker-compose build && docker-compose up # ターミナルの窓固定(2)
+docker exec -it managedby_db bash -c 'mysql -u root -ppassword' # ターミナルの窓固定(3)
 ```
 
 #### コンテナの初期化
