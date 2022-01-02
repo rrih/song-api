@@ -1,9 +1,11 @@
 module github.com/rrih/managedby
 
 go 1.16
+
 // +heroku goVersion go1.16
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.0 // indirect
 	github.com/cosmtrek/air v1.27.3 // indirect
 	github.com/creack/pty v1.1.16 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect

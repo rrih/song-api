@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"log"
 	"time"
 
@@ -9,8 +10,7 @@ import (
 )
 
 // FindAllSongs 全ての曲を返す
-func FindAllSongs() []entity.Song {
-	db := infrastructure.DbConn()
+func FindAllSongs(db *sql.DB) ([]entity.Song, error) {
 	rows, err := db.Query(
 		`
 			select
@@ -24,7 +24,7 @@ func FindAllSongs() []entity.Song {
 		`,
 	)
 	if err != nil {
-		log.Fatal(err.Error())
+		return nil, err
 	}
 	song := entity.Song{}
 	songs := []entity.Song{}
@@ -60,7 +60,7 @@ func FindAllSongs() []entity.Song {
 		songs = append(songs, song)
 	}
 	defer db.Close()
-	return songs
+	return songs, nil
 }
 
 // FindSongByID songs.idから曲を取得する
