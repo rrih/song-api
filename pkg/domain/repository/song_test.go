@@ -42,3 +42,11 @@ func Test_Success_FindAllSongs(t *testing.T) {
 		},
 	)
 }
+
+func Test_Success_FindSongByID(t *testing.T) {}
+
+func Test_Success_SaveSong(t *testing.T) {}
+
+func Test_Success_UpdateSong(t *testing.T) {}
+
+func Test_Success_DeleteSong(t *testing.T) {}
