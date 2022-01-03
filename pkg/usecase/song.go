@@ -35,7 +35,8 @@ func FindSong(w http.ResponseWriter, r *http.Request) {
 		len := utf8.RuneCountInString("/api/v1/songs/view/")
 		songID := r.URL.Path[len:]
 		id, _ := strconv.Atoi(songID)
-		body, err := repository.FindSongByID(id)
+		db := infrastructure.DbConn()
+		body, err := repository.FindSongByID(id, db)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusNotFound, err.Error())
 			return

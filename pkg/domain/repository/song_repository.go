@@ -64,8 +64,7 @@ func FindAllSongs(db *sql.DB) ([]entity.Song, error) {
 }
 
 // FindSongByID songs.idから曲を取得する
-func FindSongByID(songID int) (entity.Song, error) {
-	db := infrastructure.DbConn()
+func FindSongByID(songID int, db *sql.DB) (entity.Song, error) {
 	row, err := db.Query(
 		`
 			select
