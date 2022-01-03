@@ -99,10 +99,9 @@ func FindSongByID(songID int, db *sql.DB) (entity.Song, error) {
 // SaveSong 曲の保存
 // TODO: ref: https://qiita.com/mizumizue/items/12d504eead84214af0e1
 // こちらを参考にinsertしたレコードのidを取得して返す。
-func SaveSong(s entity.Song) error {
-	db := infrastructure.DbConn()
+func SaveSong(s entity.Song, db *sql.DB) error {
 	// TODO: 日本時間にする
-	created, modified := time.Now(), time.Now()
+	created, modified := time.Now().Format("2001-01-01 00:00:00"), time.Now().Format("2001-01-01 00:00:00")
 	_, err := db.Exec(
 		`
 			insert into songs (

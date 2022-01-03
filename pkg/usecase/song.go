@@ -62,7 +62,8 @@ func CreateSong(w http.ResponseWriter, r *http.Request) {
 		// ログイン中でないとsongを作成することはできない
 		var song entity.Song
 		json.NewDecoder(r.Body).Decode(&song)
-		err = repository.SaveSong(song)
+		db := infrastructure.DbConn()
+		err = repository.SaveSong(song, db)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}

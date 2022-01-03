@@ -34,6 +34,11 @@ docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 curl -H 'Content-Type:application/json' -d '{"name":"test user", "email":"foo@bar.com", "password":"testtesttest"}' http://localhost:8080/api/v1/users/signup/
 ```
 
+## Unit Test
+```bash
+go test -v ./...
+```
+
 ## deploy
 事前ビルド、Procfile等は heroku の master への push のみで完結する
 ```
