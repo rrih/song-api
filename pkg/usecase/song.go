@@ -35,7 +35,8 @@ func FindSong(w http.ResponseWriter, r *http.Request) {
 		len := utf8.RuneCountInString("/api/v1/songs/view/")
 		songID := r.URL.Path[len:]
 		id, _ := strconv.Atoi(songID)
-		body, err := repository.FindSongByID(id)
+		db := infrastructure.DbConn()
+		body, err := repository.FindSongByID(id, db)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusNotFound, err.Error())
 			return
@@ -61,7 +62,8 @@ func CreateSong(w http.ResponseWriter, r *http.Request) {
 		// ログイン中でないとsongを作成することはできない
 		var song entity.Song
 		json.NewDecoder(r.Body).Decode(&song)
-		err = repository.SaveSong(song)
+		db := infrastructure.DbConn()
+		err = repository.SaveSong(song, db)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
@@ -75,7 +77,8 @@ func UpdateSong(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		var s entity.Song
 		json.NewDecoder(r.Body).Decode(&s)
-		repository.UpdateSong(s)
+		db := infrastructure.DbConn()
+		repository.UpdateSong(s, db)
 	}
 }
 
@@ -85,6 +88,7 @@ func DeleteSong(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "DELETE" {
 		var s entity.Song
 		json.NewDecoder(r.Body).Decode(&s)
-		repository.DeleteSong(s)
+		db := infrastructure.DbConn()
+		repository.DeleteSong(s, db)
 	}
 }

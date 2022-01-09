@@ -26,7 +26,7 @@ func main() {
 	http.HandleFunc("/api/v1/songs/update/", usecase.UpdateSong)
 	http.HandleFunc("/api/v1/songs/delete/", usecase.DeleteSong)
 
-	// TODO: 404、5XX 系のルーティング
+	// 404
 	http.HandleFunc("/", usecase.NotFound)
 
 	port := "localhost:8080"

@@ -8,10 +8,7 @@
 touch .env
 cp .env.example .env
 go install github.com/cosmtrek/air
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-air -v
-air # ターミナルの窓固定(1)
+export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && air # ターミナルの窓固定(1)
 ```
 
 #### dbサーバ起動
@@ -32,6 +29,11 @@ docker exec -it managedby_db bash -c 'mysql -u root -ppassword'
 ユーザー登録
 ```
 curl -H 'Content-Type:application/json' -d '{"name":"test user", "email":"foo@bar.com", "password":"testtesttest"}' http://localhost:8080/api/v1/users/signup/
+```
+
+## Unit Test
+```bash
+go test -v ./...
 ```
 
 ## deploy

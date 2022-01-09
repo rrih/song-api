@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"time"
@@ -74,7 +75,6 @@ func FindById(userId int) (entity.User, error) {
 }
 
 // email からユーザを取得する
-// とりあえず FindByID のコピペ
 func FindByEmail(email string) (entity.User, error) {
 	db := infrastructure.DbConn()
 	row, err := db.Query(
@@ -141,12 +141,9 @@ func LogicalDeleteUser(id int) {
 }
 
 // 物理削除
-func PhysicalDeleteUser(id int) {
-	db := infrastructure.DbConn()
+func PhysicalDeleteUser(id int, db *sql.DB) error {
 	_, err := db.Exec(
 		"delete from users where id = ?", id,
 	)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	return err
 }
