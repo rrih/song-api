@@ -95,7 +95,7 @@ func Test_Success_SaveSong(t *testing.T) {
 		func(t *testing.T) {
 			url := "https://example.com/xxxx/yyyy/zzzz"
 			startSingingStr := "夜の運命埋め尽くす輝く夢となる"
-			time := time.Now().Format("2001-01-01 00:00:00")
+			time := time.Now().Format("2006-01-02 15:04:05")
 			s := entity.Song{
 				// ID:                 1,
 				RegisteredUserID:   "1",
@@ -147,6 +147,110 @@ func Test_Success_SaveSong(t *testing.T) {
 	)
 }
 
-func Test_Success_UpdateSong(t *testing.T) {}
+func Test_Success_UpdateSong(t *testing.T) {
+	t.Run(
+		"UpdateSongが成功するケース",
+		func(t *testing.T) {
+			url := "https://example.com/xxxx/yyyy/zzzz"
+			startSingingStr := "夜の運命埋め尽くす輝く夢となる"
+			time := time.Now().Format("2006-01-02 15:04:05")
+			s := entity.Song{
+				ID:                 "1",
+				RegisteredUserID:   "1",
+				CategoryID:         "1",
+				Name:               "FooBar",
+				SingerName:         "Hoge Fuga",
+				ComposerName:       "Piyo Piyo",
+				Source:             "テレビのCM",
+				URL:                &url,
+				IsAnimeVideoDam:    true,
+				IsAnimeVideoJoy:    true,
+				IsOfficialVideoDam: true,
+				IsOfficialVideoJoy: true,
+				StartSinging:       &startSingingStr,
+				Deleted:            nil,
+				Created:            time,
+				Modified:           time,
+			}
+			db, mock, err := sqlmock.New()
+			if err != nil {
+				t.Error(err.Error())
+			}
+			defer db.Close()
+			mock.ExpectExec(regexp.QuoteMeta(
+				`
+					update
+						songs
+					set
+						registered_user_id = ?, category_id = ?, name = ?, singer_name = ?, composer_name = ?,
+						source = ?, url = ?, is_anime_video_dam = ?, is_anime_video_joy = ?, is_official_video_dam = ?,
+						is_official_video_joy = ?, start_singing = ?, deleted = ?, modified = ?
+					where
+						id = ?
+				`,
+			)).WithArgs(
+				s.RegisteredUserID, s.CategoryID, s.Name, s.SingerName, s.ComposerName,
+				s.Source, s.URL, s.IsAnimeVideoDam, s.IsAnimeVideoJoy, s.IsOfficialVideoDam,
+				s.IsOfficialVideoJoy, s.StartSinging, s.Deleted, s.Modified, s.ID,
+			).WillReturnResult(sqlmock.NewResult(1, 1))
 
-func Test_Success_DeleteSong(t *testing.T) {}
+			err = UpdateSong(s, db)
+
+			if err != nil {
+				t.Error(err.Error())
+			}
+		},
+	)
+}
+
+func Test_Success_DeleteSong(t *testing.T) {
+	t.Run(
+		"DeleteSongが成功するケース",
+		func(t *testing.T) {
+			url := "https://example.com/xxxx/yyyy/zzzz"
+			startSingingStr := "夜の運命埋め尽くす輝く夢となる"
+			time := time.Now().Format("2006-01-02 15:04:05")
+			s := entity.Song{
+				ID:                 "1",
+				RegisteredUserID:   "1",
+				CategoryID:         "1",
+				Name:               "FooBar",
+				SingerName:         "Hoge Fuga",
+				ComposerName:       "Piyo Piyo",
+				Source:             "テレビのCM",
+				URL:                &url,
+				IsAnimeVideoDam:    true,
+				IsAnimeVideoJoy:    true,
+				IsOfficialVideoDam: true,
+				IsOfficialVideoJoy: true,
+				StartSinging:       &startSingingStr,
+				Deleted:            nil,
+				Created:            time,
+				Modified:           time,
+			}
+			db, mock, err := sqlmock.New()
+			if err != nil {
+				t.Error(err.Error())
+			}
+			defer db.Close()
+			mock.ExpectExec(regexp.QuoteMeta(
+				`
+					update
+						songs
+					set
+						deleted = ?, modified = ?
+					where
+						id = ?
+				`,
+			)).WithArgs(
+				time, time, s.ID,
+			).WillReturnResult(sqlmock.NewResult(1, 1))
+
+			err = DeleteSong(s, db)
+
+			if err != nil {
+				t.Error(err.Error())
+			}
+		},
+	)
+}

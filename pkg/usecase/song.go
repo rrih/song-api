@@ -77,7 +77,8 @@ func UpdateSong(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "PUT" {
 		var s entity.Song
 		json.NewDecoder(r.Body).Decode(&s)
-		repository.UpdateSong(s)
+		db := infrastructure.DbConn()
+		repository.UpdateSong(s, db)
 	}
 }
 
@@ -87,6 +88,7 @@ func DeleteSong(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "DELETE" {
 		var s entity.Song
 		json.NewDecoder(r.Body).Decode(&s)
-		repository.DeleteSong(s)
+		db := infrastructure.DbConn()
+		repository.DeleteSong(s, db)
 	}
 }

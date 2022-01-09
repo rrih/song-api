@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/rrih/managedby/pkg/domain/entity"
-	"github.com/rrih/managedby/pkg/infrastructure"
 )
 
 // FindAllSongs 全ての曲を返す
@@ -101,7 +100,7 @@ func FindSongByID(songID int, db *sql.DB) (entity.Song, error) {
 // こちらを参考にinsertしたレコードのidを取得して返す。
 func SaveSong(s entity.Song, db *sql.DB) error {
 	// TODO: 日本時間にする
-	created, modified := time.Now().Format("2001-01-01 00:00:00"), time.Now().Format("2001-01-01 00:00:00")
+	created, modified := time.Now().Format("2006-01-02 15:04:05"), time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		`
 			insert into songs (
@@ -119,35 +118,31 @@ func SaveSong(s entity.Song, db *sql.DB) error {
 }
 
 // UpdateSong 曲の更新
-func UpdateSong(s entity.Song) {
-	db := infrastructure.DbConn()
+func UpdateSong(s entity.Song, db *sql.DB) error {
 	// TODO: 日本時間にする
-	modified := time.Now()
+	modified := time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		`
 			update
 				songs
 			set
-			registered_user_id = ?, category_id = ?, name = ?, singer_name = ?, composer_name = ?,
-			source = ?, url = ?, is_anime_video_dam = ?, is_anime_video_joy = ?, is_official_video_dam = ?,
-			is_official_video_joy = ?, start_singing = ?, deleted = ?, modified = ?
+				registered_user_id = ?, category_id = ?, name = ?, singer_name = ?, composer_name = ?,
+				source = ?, url = ?, is_anime_video_dam = ?, is_anime_video_joy = ?, is_official_video_dam = ?,
+				is_official_video_joy = ?, start_singing = ?, deleted = ?, modified = ?
 			where
 				id = ?
 		`,
 		s.RegisteredUserID, s.CategoryID, s.Name, s.SingerName, s.ComposerName,
 		s.Source, s.URL, s.IsAnimeVideoDam, s.IsAnimeVideoJoy, s.IsOfficialVideoDam,
-		s.IsOfficialVideoJoy, s.StartSinging, s.Deleted, modified,
+		s.IsOfficialVideoJoy, s.StartSinging, s.Deleted, modified, s.ID,
 	)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	return err
 }
 
 // DeleteSong 曲削除
-func DeleteSong(s entity.Song) {
-	db := infrastructure.DbConn()
-	modified := time.Now()
-	deleted := time.Now()
+func DeleteSong(s entity.Song, db *sql.DB) error {
+	modified := time.Now().Format("2006-01-02 15:04:05")
+	deleted := time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		`
 			update
@@ -159,7 +154,5 @@ func DeleteSong(s entity.Song) {
 		`,
 		deleted, modified, s.ID,
 	)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	return err
 }

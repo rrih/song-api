@@ -8,10 +8,7 @@
 touch .env
 cp .env.example .env
 go install github.com/cosmtrek/air
-export GOPATH=$HOME/go
-export PATH=$PATH:$GOPATH/bin
-air -v
-air # ターミナルの窓固定(1)
+export GOPATH=$HOME/go && export PATH=$PATH:$GOPATH/bin && air # ターミナルの窓固定(1)
 ```
 
 #### dbサーバ起動
