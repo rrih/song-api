@@ -105,7 +105,7 @@ func FindByEmail(email string) (entity.User, error) {
 func Insert(u entity.InsertedUser) {
 	db := infrastructure.DbConn()
 	// TODO: 日本時間にする
-	created, modified := time.Now(), time.Now()
+	created, modified := time.Now().Format("2006-01-02 15:04:05"), time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		"insert into users (name, email, password, is_admin, deleted, created, modified) values (?, ?, ?, ?, ?, ?, ?)", u.Name, u.Email, u.Password, u.IsAdmin, nil, created, modified,
 	)
@@ -116,7 +116,7 @@ func Insert(u entity.InsertedUser) {
 
 func Update(u entity.InsertedUser, id int) {
 	db := infrastructure.DbConn()
-	modified := time.Now()
+	modified := time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		"update users set name = ?, email = ?, password = ?, modified = ? where id = ?",
 		u.Name, u.Email, u.Password, modified, id,
@@ -129,8 +129,8 @@ func Update(u entity.InsertedUser, id int) {
 // 論理削除
 func LogicalDeleteUser(id int) {
 	db := infrastructure.DbConn()
-	modified := time.Now()
-	deleted := time.Now()
+	modified := time.Now().Format("2006-01-02 15:04:05")
+	deleted := time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		"update users set deleted = ?, modified = ? where id = ?",
 		deleted, modified, id,

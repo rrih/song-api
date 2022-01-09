@@ -82,7 +82,7 @@ func FindCategoryByID(id int) (entity.Category, error) {
 func SaveCategory(c entity.Category) error {
 	db := infrastructure.DbConn()
 	// TODO: 日本時間にする
-	created, modified := time.Now(), time.Now()
+	created, modified := time.Now().Format("2006-01-02 15:04:05"), time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		`
 			insert into categories (
@@ -100,7 +100,7 @@ func SaveCategory(c entity.Category) error {
 func UpdateCategory(c entity.Category) {
 	db := infrastructure.DbConn()
 	// TODO: 日本時間にする
-	modified := time.Now()
+	modified := time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		`
 			update
@@ -121,8 +121,8 @@ func UpdateCategory(c entity.Category) {
 // 不要？admin権限のみでいいかも
 func DeleteCategory(c entity.Category) {
 	db := infrastructure.DbConn()
-	modified := time.Now()
-	deleted := time.Now()
+	modified := time.Now().Format("2006-01-02 15:04:05")
+	deleted := time.Now().Format("2006-01-02 15:04:05")
 	_, err := db.Exec(
 		`
 			update
