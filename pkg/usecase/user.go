@@ -151,10 +151,12 @@ func Login(w http.ResponseWriter, r *http.Request) {
 func CreateJwtToken(userID string) (string, error) {
 	// tokenの生成
 	token := jwt.New(jwt.GetSigningMethod("HS256"))
+	// 時間
+	t, _ := strconv.Atoi(os.Getenv("TIME"))
 	// クレームの設定
 	token.Claims = jwt.MapClaims{
 		"user": userID,
-		"exp":  time.Now().Add(time.Hour * 1).Unix(), // 有効期限を指定(とりあえず1時間としている)
+		"exp":  time.Now().Add(time.Hour * time.Duration(t)).Unix(), // 有効期限を指定(とりあえず1時間としている)
 	}
 	// 署名
 	var secretKey = os.Getenv("SIGNING_KEY")
