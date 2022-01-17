@@ -19,7 +19,7 @@ func SetupHeader(w http.ResponseWriter, r *http.Request) error {
 	origin := ""
 	isProd := os.Getenv("PORT") != ""
 	if isProd {
-		origin = "https://sso-front.vercel.app"
+		origin = "https://song-front.vercel.app"
 	} else {
 		origin = "http://localhost:3000"
 	}
