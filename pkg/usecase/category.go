@@ -13,7 +13,10 @@ import (
 
 // FindCategories カテゴリー一覧を取得
 func FindCategories(w http.ResponseWriter, r *http.Request) {
-	middleware.SetupHeader(w, r)
+	err := middleware.SetupHeader(w, r)
+	if err != nil {
+		return
+	}
 	if r.Method == "GET" {
 		body := repository.FindAllCategories()
 		middleware.Response(w, nil, map[string]interface{}{"data": body})
@@ -23,7 +26,10 @@ func FindCategories(w http.ResponseWriter, r *http.Request) {
 // FindCategory idから特定のカテゴリーを取得
 // 使用するか要検討
 func FindCategory(w http.ResponseWriter, r *http.Request) {
-	middleware.SetupHeader(w, r)
+	err := middleware.SetupHeader(w, r)
+	if err != nil {
+		return
+	}
 	if r.Method == "GET" {
 		// リクエストのURLからuser_idを取り出す
 		len := utf8.RuneCountInString("/api/v1/songs/view/")
@@ -40,7 +46,10 @@ func FindCategory(w http.ResponseWriter, r *http.Request) {
 
 // DeleteCategory 曲削除
 func DeleteCategory(w http.ResponseWriter, r *http.Request) {
-	middleware.SetupHeader(w, r)
+	err := middleware.SetupHeader(w, r)
+	if err != nil {
+		return
+	}
 	if r.Method == "DELETE" {
 		var c entity.Category
 		json.NewDecoder(r.Body).Decode(&c)

@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -57,10 +58,9 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	middleware.SetupHeader(w, r)
 	if r.Method == "POST" {
 		// TODO: 絶対ここでパスワードのハッシュ化するのおかしいからあとで直す
-		// hash, err = PasswordHash()
 		var p entity.InsertedUser
 		json.NewDecoder(r.Body).Decode(&p)
-		// TODO: てきとうすぎるので直す
+		// TODO: 直す
 		password, err := PasswordHash(p.Password)
 		if err != nil {
 			panic(err)
@@ -72,9 +72,41 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// header の jwt から jwt と user id を返す
+func AuthJwt(w http.ResponseWriter, r *http.Request) {
+	// cors
+	middleware.SetupHeader(w, r)
+	// ログイン判定
+	IsLogin(w, r)
+
+	token, err := IsLogin(w, r)
+	if err != nil {
+		entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
+		// エラーなら終了
+		return
+	}
+
+	claims := token.Claims.(jwt.MapClaims)
+	email := claims["user"]
+	body, err := repository.FindByEmail(email.(string))
+	if err != nil {
+		entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
+		return
+	}
+
+	user, err := repository.FindByEmail(body.Email)
+	entity.SuccessResponse(w, &entity.LoginResponse{
+		Token:  r.Header.Get("Authorization"),
+		UserID: user.ID,
+	})
+}
+
 func Login(w http.ResponseWriter, r *http.Request) {
 	// cors解決
-	middleware.SetupHeader(w, r)
+	err := middleware.SetupHeader(w, r)
+	if err != nil {
+		return
+	}
 	if r.Method == "POST" {
 		// bodyの読み出し
 		body, err := io.ReadAll(r.Body)
@@ -88,22 +120,19 @@ func Login(w http.ResponseWriter, r *http.Request) {
 			// TODO: エラー処理
 			panic(err)
 		}
-
 		// ユーザ認証
-		// TODO: やっつけ実装すぎるのであとで整理
+		// TODO: あとで整理
 		var hash string
 		db := infrastructure.DbConn()
 		row := db.QueryRow("SELECT password FROM users WHERE email=?", loginRequest.Email)
 		if err = row.Scan(&hash); err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
-
 		// パスワード検証
 		err = PasswordVerify(hash, loginRequest.Password)
 		if err != nil {
 			entity.ErrorResponse(w, http.StatusUnauthorized, err.Error())
 		}
-
 		// tokenの発行
 		token, err := CreateJwtToken(loginRequest.Email)
 		if err != nil {
@@ -128,7 +157,7 @@ func CreateJwtToken(userID string) (string, error) {
 		"exp":  time.Now().Add(time.Hour * 1).Unix(), // 有効期限を指定(とりあえず1時間としている)
 	}
 	// 署名
-	var secretKey = "secret" // 任意の文字列
+	var secretKey = os.Getenv("SIGNING_KEY")
 	tokenString, err := token.SignedString([]byte(secretKey))
 	if err != nil {
 		return "", err
@@ -140,7 +169,7 @@ func CreateJwtToken(userID string) (string, error) {
 func VerifyToken(tokenString string) (*jwt.Token, error) {
 	// jwtの検証
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte("secret"), nil // CreateJwtToken で指定した任意の文字列
+		return []byte(os.Getenv("SIGNING_KEY")), nil // CreateJwtToken で指定した任意の文字列
 	})
 	return token, err
 }

@@ -15,17 +15,25 @@ func Response(w http.ResponseWriter, err error, body map[string]interface{}) {
 	}
 }
 
-func SetupHeader(w http.ResponseWriter, r *http.Request) {
+func SetupHeader(w http.ResponseWriter, r *http.Request) error {
 	origin := ""
 	isProd := os.Getenv("PORT") != ""
 	if isProd {
-		origin = "https://songscoreonline.vercel.app"
+		origin = "https://sso-front.vercel.app"
 	} else {
 		origin = "http://localhost:3000"
 	}
-	w.Header().Add("Content-Type", "application/json")
-	w.Header().Add("Access-Control-Allow-Origin", origin)
-	w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
-	w.Header().Add("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
-	w.Header().Add("Access-Control-Allow-Credentials", "true")
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", origin)
+	w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Content-Language, Accept-Language, Accept-Encoding, X-CSRF-Token, Authorization")
+	w.Header().Set("Access-Control-Allow-Credentials", "true")
+
+	// preflight用
+	if r.Method == "OPTIONS" {
+		w.WriteHeader(http.StatusOK)
+		return nil
+	}
+	return nil
 }

@@ -31,3 +31,7 @@ type LoginResponse struct {
 	Token  string `json:"token"`
 	UserID string `json:"login_user_id"`
 }
+
+type AuthObject struct {
+	Token string `json:"token"`
+}
