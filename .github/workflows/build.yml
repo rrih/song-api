@@ -3,23 +3,11 @@ name: build
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     types: [opened, synchronize, reopened]
 
 jobs:
-  # check:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v2
-  #     - uses: reviewdog/action-staticcheck@v1
-  #       with:
-  #         github_token: ${{ secrets.GITHUB_TOKEN }}
-  #         reporter: github-pr-review
-  #         filter_mode: nofilter
-  #         fail_on_error: true
-
   build:
     runs-on: ubuntu-latest
     strategy:
