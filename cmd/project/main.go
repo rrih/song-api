@@ -26,6 +26,10 @@ func main() {
 	http.HandleFunc("/api/v1/songs/add/", usecase.CreateSong)
 	http.HandleFunc("/api/v1/songs/update/", usecase.UpdateSong)
 	http.HandleFunc("/api/v1/songs/delete/", usecase.DeleteSong)
+	// category
+	http.HandleFunc("/api/v1/categories", usecase.FindCategories)
+	http.HandleFunc("/api/v1/categories/view/", usecase.FindCategory)
+	http.HandleFunc("/api/v1/categories/delete/", usecase.DeleteCategory)
 
 	// 404
 	http.HandleFunc("/", usecase.NotFound)
